@@ -1,0 +1,4 @@
+{
+  "schema": ".next/graphql-schema.json",
+  "documents": "src/**/*.{graphql,js,ts,jsx,tsx}"
+}

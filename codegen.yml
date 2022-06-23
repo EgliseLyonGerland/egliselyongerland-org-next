@@ -1,0 +1,19 @@
+overwrite: true
+schema: "http://localhost:8000/graphql"
+documents: "src/**/*.tsx"
+generates:
+  .next/graphql-schema.json:
+    plugins:
+      - introspection
+  src/types/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      maybeValue: T
+      avoidOptionals: true
+
+hooks:
+  afterOneFileWrite:
+    - prettier --write

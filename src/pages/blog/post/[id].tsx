@@ -2,13 +2,18 @@ import { gql } from "@apollo/client";
 import { GetStaticPaths, GetStaticProps } from "next";
 
 import { client } from "../../../services/appolo";
+import {
+  GetPostQuery,
+  GetPostQueryVariables,
+  GetPostsQuery,
+} from "../../../types/graphql";
 
 interface Post {
   title: string;
 }
 
 interface Props {
-  post: Post;
+  post: GetPostQuery["post"];
 }
 
 function Post({ post }: Props) {
@@ -16,12 +21,10 @@ function Post({ post }: Props) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data } = await client.query<{
-    posts: { nodes: { postId: number }[] };
-  }>({
+  const { data } = await client.query<GetPostsQuery, GetPostQueryVariables>({
     query: gql`
-      query {
-        posts(last: 10000) {
+      query GetPosts {
+        posts {
           nodes {
             postId
           }
@@ -43,14 +46,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
   params,
 }) => {
-  const { data } = await client.query<{ post: Post }>({
+  const { data } = await client.query<GetPostQuery, GetPostQueryVariables>({
     query: gql`
-      query {
-        post(id: ${params?.id}, idType: DATABASE_ID) {
-         title
+      query GetPost($id: ID!) {
+        post(id: $id, idType: DATABASE_ID) {
+          title
         }
       }
     `,
+    variables: {
+      id: params?.id || "",
+    },
   });
 
   return {
