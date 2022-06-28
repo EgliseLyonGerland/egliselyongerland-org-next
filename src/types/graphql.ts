@@ -7694,13 +7694,23 @@ export type WritingSettings = {
   useSmilies: Maybe<Scalars["Boolean"]>;
 };
 
+export type GetBlogIndexPostsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetBlogIndexPostsQuery = {
+  __typename?: "RootQuery";
+  posts: {
+    __typename?: "RootQueryToPostConnection";
+    nodes: Array<{ __typename?: "Post"; databaseId: number; title: string }>;
+  };
+};
+
 export type GetPostsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetPostsQuery = {
   __typename?: "RootQuery";
   posts: {
     __typename?: "RootQueryToPostConnection";
-    nodes: Array<{ __typename?: "Post"; postId: number }>;
+    nodes: Array<{ __typename?: "Post"; databaseId: number }>;
   };
 };
 
@@ -7713,11 +7723,71 @@ export type GetPostQuery = {
   post: { __typename?: "Post"; title: string };
 };
 
+export const GetBlogIndexPostsDocument = gql`
+  query GetBlogIndexPosts {
+    posts {
+      nodes {
+        databaseId
+        title
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetBlogIndexPostsQuery__
+ *
+ * To run a query within a React component, call `useGetBlogIndexPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBlogIndexPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBlogIndexPostsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetBlogIndexPostsQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetBlogIndexPostsQuery,
+    GetBlogIndexPostsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<
+    GetBlogIndexPostsQuery,
+    GetBlogIndexPostsQueryVariables
+  >(GetBlogIndexPostsDocument, options);
+}
+export function useGetBlogIndexPostsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetBlogIndexPostsQuery,
+    GetBlogIndexPostsQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<
+    GetBlogIndexPostsQuery,
+    GetBlogIndexPostsQueryVariables
+  >(GetBlogIndexPostsDocument, options);
+}
+export type GetBlogIndexPostsQueryHookResult = ReturnType<
+  typeof useGetBlogIndexPostsQuery
+>;
+export type GetBlogIndexPostsLazyQueryHookResult = ReturnType<
+  typeof useGetBlogIndexPostsLazyQuery
+>;
+export type GetBlogIndexPostsQueryResult = Apollo.QueryResult<
+  GetBlogIndexPostsQuery,
+  GetBlogIndexPostsQueryVariables
+>;
 export const GetPostsDocument = gql`
   query GetPosts {
     posts {
       nodes {
-        postId
+        databaseId
       }
     }
   }

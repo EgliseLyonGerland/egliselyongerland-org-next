@@ -6,6 +6,7 @@ import {
   GetPostQuery,
   GetPostQueryVariables,
   GetPostsQuery,
+  GetPostsQueryVariables,
 } from "../../../types/graphql";
 
 interface Post {
@@ -17,16 +18,20 @@ interface Props {
 }
 
 function Post({ post }: Props) {
-  return <div>{post.title}</div>;
+  return (
+    <div>
+      <h1>{post.title}</h1>
+    </div>
+  );
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data } = await client.query<GetPostsQuery, GetPostQueryVariables>({
+  const { data } = await client.query<GetPostsQuery, GetPostsQueryVariables>({
     query: gql`
       query GetPosts {
         posts {
           nodes {
-            postId
+            databaseId
           }
         }
       }
@@ -36,7 +41,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: data.posts.nodes.map((post) => ({
       params: {
-        id: `${post.postId}`,
+        id: `${post.databaseId}`,
       },
     })),
     fallback: false,
