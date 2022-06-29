@@ -2430,8 +2430,12 @@ export enum MenuNodeIdTypeEnum {
   DatabaseId = "DATABASE_ID",
   /** Identify a menu node by the (hashed) Global ID. */
   Id = "ID",
-  /** Identify a menu node by it's name */
+  /** Identify a menu node by the slug of menu location to which it is assigned */
+  Location = "LOCATION",
+  /** Identify a menu node by its name */
   Name = "NAME",
+  /** Identify a menu node by its slug */
+  Slug = "SLUG",
 }
 
 /** Connection between the Menu type and the MenuItem type */
@@ -7720,7 +7724,7 @@ export type GetPostQueryVariables = Exact<{
 
 export type GetPostQuery = {
   __typename?: "RootQuery";
-  post: { __typename?: "Post"; title: string };
+  post: { __typename?: "Post"; title: string; content: string };
 };
 
 export const GetBlogIndexPostsDocument = gql`
@@ -7785,7 +7789,7 @@ export type GetBlogIndexPostsQueryResult = Apollo.QueryResult<
 >;
 export const GetPostsDocument = gql`
   query GetPosts {
-    posts {
+    posts(first: 100) {
       nodes {
         databaseId
       }
@@ -7841,6 +7845,7 @@ export const GetPostDocument = gql`
   query GetPost($id: ID!) {
     post(id: $id, idType: DATABASE_ID) {
       title
+      content
     }
   }
 `;

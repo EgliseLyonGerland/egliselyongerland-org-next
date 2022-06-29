@@ -21,6 +21,7 @@ function Post({ post }: Props) {
   return (
     <div>
       <h1>{post.title}</h1>
+      <div dangerouslySetInnerHTML={{ __html: post.content }} />
     </div>
   );
 }
@@ -29,7 +30,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const { data } = await client.query<GetPostsQuery, GetPostsQueryVariables>({
     query: gql`
       query GetPosts {
-        posts {
+        posts(first: 100) {
           nodes {
             databaseId
           }
@@ -44,7 +45,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
         id: `${post.databaseId}`,
       },
     })),
-    fallback: false,
+    fallback: "blocking",
   };
 };
 
@@ -56,6 +57,7 @@ export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
       query GetPost($id: ID!) {
         post(id: $id, idType: DATABASE_ID) {
           title
+          content
         }
       }
     `,
@@ -68,6 +70,7 @@ export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
     props: {
       post: data.post,
     },
+    revalidate: 10,
   };
 };
 
