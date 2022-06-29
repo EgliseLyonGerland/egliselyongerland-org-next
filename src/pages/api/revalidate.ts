@@ -28,7 +28,7 @@ const handler: NextApiHandler<string> = async (req, res) => {
   }
 
   try {
-    await res.unstable_revalidate(path);
+    await res.revalidate(path);
     return res.send("OK");
   } catch (err) {
     return res.status(500).send("Error");
