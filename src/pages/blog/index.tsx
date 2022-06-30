@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 
-import { client } from "../../services/appolo";
+import { getClient } from "../../services/appolo";
 import {
   GetBlogIndexPostsQuery,
   GetBlogIndexPostsQueryVariables,
@@ -28,7 +28,7 @@ const Blog = ({ posts }: Props) => {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
-  const { data } = await client.query<
+  const { data } = await getClient().query<
     GetBlogIndexPostsQuery,
     GetBlogIndexPostsQueryVariables
   >({

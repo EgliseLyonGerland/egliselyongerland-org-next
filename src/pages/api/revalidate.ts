@@ -4,12 +4,10 @@ interface Post {
   ID: number;
 }
 
-const isProduction = process.env.NODE_ENV === "production";
-
 const handler: NextApiHandler<string> = async (req, res) => {
   const { token } = req.query;
 
-  if (isProduction && (!token || token !== process.env.REVALIDATE_TOKEN)) {
+  if (!token || token !== process.env.REVALIDATE_TOKEN) {
     return res.status(401).send("Invalid token");
   }
 

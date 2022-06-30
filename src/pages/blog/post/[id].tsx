@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { GetStaticPaths, GetStaticProps } from "next";
 
-import { client } from "../../../services/appolo";
+import { getClient } from "../../../services/appolo";
 import {
   GetPostQuery,
   GetPostQueryVariables,
@@ -18,6 +18,10 @@ interface Props {
 }
 
 function Post({ post }: Props) {
+  if (!post) {
+    return "Loading...";
+  }
+
   return (
     <div>
       <h1>{post.title}</h1>
@@ -27,7 +31,10 @@ function Post({ post }: Props) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const { data } = await client.query<GetPostsQuery, GetPostsQueryVariables>({
+  const { data } = await getClient().query<
+    GetPostsQuery,
+    GetPostsQueryVariables
+  >({
     query: gql`
       query GetPosts {
         posts(first: 100) {
@@ -45,17 +52,21 @@ export const getStaticPaths: GetStaticPaths = async () => {
         id: `${post.databaseId}`,
       },
     })),
-    fallback: "blocking",
+    fallback: true,
   };
 };
 
 export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
   params,
+  preview = false,
 }) => {
-  const { data } = await client.query<GetPostQuery, GetPostQueryVariables>({
+  const { data } = await getClient(preview).query<
+    GetPostQuery,
+    GetPostQueryVariables
+  >({
     query: gql`
-      query GetPost($id: ID!) {
-        post(id: $id, idType: DATABASE_ID) {
+      query GetPost($id: ID!, $preview: Boolean) {
+        post(id: $id, idType: DATABASE_ID, asPreview: $preview) {
           title
           content
         }
@@ -63,8 +74,15 @@ export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
     `,
     variables: {
       id: params?.id || "",
+      preview,
     },
   });
+
+  if (!data.post) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {
