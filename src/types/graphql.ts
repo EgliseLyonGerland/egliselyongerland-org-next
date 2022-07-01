@@ -2148,6 +2148,8 @@ export enum MediaItemSizeEnum {
   Medium = "MEDIUM",
   /** MediaItem with the medium_large size */
   MediumLarge = "MEDIUM_LARGE",
+  /** MediaItem with the post-thumbnail size */
+  PostThumbnail = "POST_THUMBNAIL",
   /** MediaItem with the profile_24 size */
   Profile_24 = "PROFILE_24",
   /** MediaItem with the profile_48 size */
@@ -2397,7 +2399,7 @@ export enum MenuItemNodeIdTypeEnum {
 }
 
 /** Deprecated in favor of MenuItemLinkeable Interface */
-export type MenuItemObjectUnion = Category | Page | Post | Tag;
+export type MenuItemObjectUnion = Category | Page | Post | PostFormat | Tag;
 
 /** Connection between the MenuItem type and the Menu type */
 export type MenuItemToMenuConnectionEdge = {
@@ -2447,8 +2449,10 @@ export type MenuItemToMenuItemLinkableConnectionEdge = {
 
 /** Registered menu locations */
 export enum MenuLocationEnum {
-  /** Empty menu location */
-  Empty = "EMPTY",
+  /** Put the menu in the footer location */
+  Footer = "FOOTER",
+  /** Put the menu in the primary location */
+  Primary = "PRIMARY",
 }
 
 /** The Type of Identifier used to fetch a single node. Default is "ID". To be used along with the "id" field. */
@@ -3498,6 +3502,7 @@ export type PostCategoriesNodeInput = {
 
 /** The postFormat type */
 export type PostFormat = DatabaseIdentifier &
+  MenuItemLinkable &
   Node &
   TermNode &
   UniformResourceIdentifiable & {
@@ -3506,7 +3511,7 @@ export type PostFormat = DatabaseIdentifier &
     contentNodes: Maybe<PostFormatToContentNodeConnection>;
     /** The number of objects connected to the object */
     count: Maybe<Scalars["Int"]>;
-    /** The unique identifier stored in the database */
+    /** The unique resource identifier path */
     databaseId: Scalars["Int"];
     /** The description of the object */
     description: Maybe<Scalars["String"]>;

@@ -21,7 +21,7 @@ const Page = ({ page }: Props) => {
 
   return (
     <div>
-      <h1>{page.title}</h1>
+      <h2>{page.title}</h2>
       <div dangerouslySetInnerHTML={{ __html: page.content }} />
     </div>
   );

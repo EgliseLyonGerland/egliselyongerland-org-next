@@ -15,7 +15,7 @@ type Props = {
 const Blog = ({ posts }: Props) => {
   return (
     <div>
-      <h1>Blog</h1>
+      <h2>Blog</h2>
       <ul>
         {posts.map((post) => (
           <li key={post.databaseId}>
