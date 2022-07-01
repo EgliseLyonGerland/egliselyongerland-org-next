@@ -4,13 +4,8 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 
-const apiUrl =
-  process.env.NODE_ENV === "development"
-    ? "http://localhost:8000/graphql"
-    : "https://wp.egliselyongerland.org/graphql";
-
 const clientBaseProps: ApolloClientOptions<unknown> = {
-  uri: apiUrl,
+  uri: process.env.WORDPRESS_GRAPHQL_ENDPOINT,
   cache: new InMemoryCache(),
   defaultOptions: {
     query: {
