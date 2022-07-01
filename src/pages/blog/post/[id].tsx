@@ -9,10 +9,6 @@ import {
   GetPostsQueryVariables,
 } from "../../../types/graphql";
 
-interface Post {
-  title: string;
-}
-
 interface Props {
   post: GetPostQuery["post"];
 }
