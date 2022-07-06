@@ -66,6 +66,16 @@ export enum AvatarRatingEnum {
   X = "X",
 }
 
+export type BibleRef = {
+  __typename?: "BibleRef";
+  book: Maybe<Scalars["String"]>;
+  chapterEnd: Maybe<Scalars["Int"]>;
+  chapterStart: Maybe<Scalars["Int"]>;
+  raw: Maybe<Scalars["String"]>;
+  verseEnd: Maybe<Scalars["Int"]>;
+  verseStart: Maybe<Scalars["Int"]>;
+};
+
 /** The category type */
 export type Category = DatabaseIdentifier &
   HierarchicalTermNode &
@@ -2148,8 +2158,6 @@ export enum MediaItemSizeEnum {
   Medium = "MEDIUM",
   /** MediaItem with the medium_large size */
   MediumLarge = "MEDIUM_LARGE",
-  /** MediaItem with the post-thumbnail size */
-  PostThumbnail = "POST_THUMBNAIL",
   /** MediaItem with the profile_24 size */
   Profile_24 = "PROFILE_24",
   /** MediaItem with the profile_48 size */
@@ -2399,7 +2407,7 @@ export enum MenuItemNodeIdTypeEnum {
 }
 
 /** Deprecated in favor of MenuItemLinkeable Interface */
-export type MenuItemObjectUnion = Category | Page | Post | PostFormat | Tag;
+export type MenuItemObjectUnion = Category | Page | Post | Tag;
 
 /** Connection between the MenuItem type and the Menu type */
 export type MenuItemToMenuConnectionEdge = {
@@ -2449,10 +2457,8 @@ export type MenuItemToMenuItemLinkableConnectionEdge = {
 
 /** Registered menu locations */
 export enum MenuLocationEnum {
-  /** Put the menu in the footer location */
-  Footer = "FOOTER",
-  /** Put the menu in the primary location */
-  Primary = "PRIMARY",
+  /** Empty menu location */
+  Empty = "EMPTY",
 }
 
 /** The Type of Identifier used to fetch a single node. Default is "ID". To be used along with the "id" field. */
@@ -3290,6 +3296,7 @@ export type Post = ContentNode &
     authorDatabaseId: Maybe<Scalars["Int"]>;
     /** The globally unique identifier of the author of the node */
     authorId: Maybe<Scalars["ID"]>;
+    bibleRefs: Maybe<Array<Maybe<BibleRef>>>;
     /** Connection between the post type and the category type */
     categories: Maybe<PostToCategoryConnection>;
     /** The number of comments. Even though WPGraphQL denotes this field as an integer, in WordPress this field should be saved as a numeric string for compatibility. */
@@ -3502,7 +3509,6 @@ export type PostCategoriesNodeInput = {
 
 /** The postFormat type */
 export type PostFormat = DatabaseIdentifier &
-  MenuItemLinkable &
   Node &
   TermNode &
   UniformResourceIdentifiable & {
@@ -3511,7 +3517,7 @@ export type PostFormat = DatabaseIdentifier &
     contentNodes: Maybe<PostFormatToContentNodeConnection>;
     /** The number of objects connected to the object */
     count: Maybe<Scalars["Int"]>;
-    /** The unique resource identifier path */
+    /** The unique identifier stored in the database */
     databaseId: Scalars["Int"];
     /** The description of the object */
     description: Maybe<Scalars["String"]>;
@@ -5787,6 +5793,12 @@ export type RootQueryToPostConnectionWhereArgs = {
   authorName: InputMaybe<Scalars["String"]>;
   /** Find objects NOT connected to author(s) in the array of author's userIds */
   authorNotIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Filter by Bible book */
+  bibleRefBook: InputMaybe<Scalars["String"]>;
+  /** Filter by Bible book's chapter */
+  bibleRefChapter: InputMaybe<Scalars["Int"]>;
+  /** Filter by Bible chapter's verse */
+  bibleRefVerse: InputMaybe<Scalars["Int"]>;
   /** Category ID */
   categoryId: InputMaybe<Scalars["Int"]>;
   /** Array of category IDs, used to display objects from one category OR another */
@@ -7751,6 +7763,22 @@ export type WritingSettings = {
   useSmilies: Maybe<Scalars["Boolean"]>;
 };
 
+export type GetSearchQueryVariables = Exact<{
+  query: Scalars["String"];
+}>;
+
+export type GetSearchQuery = {
+  __typename?: "RootQuery";
+  contentNodes: {
+    __typename?: "RootQueryToContentNodeConnection";
+    nodes: Array<
+      | { __typename?: "MediaItem"; id: string }
+      | { __typename?: "Page"; title: string; uri: string; id: string }
+      | { __typename?: "Post"; title: string; databaseId: number; id: string }
+    >;
+  };
+};
+
 export type GetPagesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetPagesQuery = {
@@ -7802,6 +7830,72 @@ export type GetPostQuery = {
   post: { __typename?: "Post"; title: string; content: string };
 };
 
+export const GetSearchDocument = gql`
+  query GetSearch($query: String!) {
+    contentNodes(
+      where: { search: $query, contentTypes: [PAGE, POST] }
+      first: 5
+    ) {
+      nodes {
+        id
+        ... on Post {
+          title
+          databaseId
+        }
+        ... on Page {
+          title
+          uri
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetSearchQuery__
+ *
+ * To run a query within a React component, call `useGetSearchQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSearchQuery({
+ *   variables: {
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useGetSearchQuery(
+  baseOptions: Apollo.QueryHookOptions<GetSearchQuery, GetSearchQueryVariables>
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetSearchQuery, GetSearchQueryVariables>(
+    GetSearchDocument,
+    options
+  );
+}
+export function useGetSearchLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetSearchQuery,
+    GetSearchQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetSearchQuery, GetSearchQueryVariables>(
+    GetSearchDocument,
+    options
+  );
+}
+export type GetSearchQueryHookResult = ReturnType<typeof useGetSearchQuery>;
+export type GetSearchLazyQueryHookResult = ReturnType<
+  typeof useGetSearchLazyQuery
+>;
+export type GetSearchQueryResult = Apollo.QueryResult<
+  GetSearchQuery,
+  GetSearchQueryVariables
+>;
 export const GetPagesDocument = gql`
   query GetPages {
     pages {

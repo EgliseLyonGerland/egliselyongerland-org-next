@@ -1,11 +1,14 @@
 import {
   ApolloClient,
   ApolloClientOptions,
+  HttpLink,
   InMemoryCache,
 } from "@apollo/client";
 
 const clientBaseProps: ApolloClientOptions<unknown> = {
-  uri: process.env.WORDPRESS_GRAPHQL_ENDPOINT,
+  link: new HttpLink({
+    uri: process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_ENDPOINT,
+  }),
   cache: new InMemoryCache(),
   defaultOptions: {
     query: {
