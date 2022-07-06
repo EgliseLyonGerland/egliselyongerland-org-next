@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
 export type Maybe<T> = T;
-export type InputMaybe<T> = T;
+export type InputMaybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
@@ -7800,13 +7800,22 @@ export type GetPageQuery = {
   page: { __typename?: "Page"; title: string; content: string };
 };
 
-export type GetBlogIndexPostsQueryVariables = Exact<{ [key: string]: never }>;
+export type GetBlogIndexPostsQueryVariables = Exact<{
+  book: InputMaybe<Scalars["String"]>;
+  chapter: InputMaybe<Scalars["Int"]>;
+  verse: InputMaybe<Scalars["Int"]>;
+}>;
 
 export type GetBlogIndexPostsQuery = {
   __typename?: "RootQuery";
   posts: {
     __typename?: "RootQueryToPostConnection";
-    nodes: Array<{ __typename?: "Post"; databaseId: number; title: string }>;
+    nodes: Array<{
+      __typename?: "Post";
+      databaseId: number;
+      title: string;
+      bibleRefs: Array<{ __typename?: "BibleRef"; raw: string }>;
+    }>;
   };
 };
 
@@ -8002,11 +8011,21 @@ export type GetPageQueryResult = Apollo.QueryResult<
   GetPageQueryVariables
 >;
 export const GetBlogIndexPostsDocument = gql`
-  query GetBlogIndexPosts {
-    posts {
+  query GetBlogIndexPosts($book: String, $chapter: Int, $verse: Int) {
+    posts(
+      first: 100
+      where: {
+        bibleRefBook: $book
+        bibleRefChapter: $chapter
+        bibleRefVerse: $verse
+      }
+    ) {
       nodes {
         databaseId
         title
+        bibleRefs {
+          raw
+        }
       }
     }
   }
@@ -8024,6 +8043,9 @@ export const GetBlogIndexPostsDocument = gql`
  * @example
  * const { data, loading, error } = useGetBlogIndexPostsQuery({
  *   variables: {
+ *      book: // value for 'book'
+ *      chapter: // value for 'chapter'
+ *      verse: // value for 'verse'
  *   },
  * });
  */

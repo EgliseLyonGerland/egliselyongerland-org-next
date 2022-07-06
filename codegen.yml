@@ -12,6 +12,7 @@ generates:
       - typescript-react-apollo
     config:
       maybeValue: T
+      inputMaybeValue: T | null
       avoidOptionals: true
 
 hooks:
