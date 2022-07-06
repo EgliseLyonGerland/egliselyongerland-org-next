@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ReactNode } from "react";
 
+import Search from "./search";
+
 type Props = {
   children: ReactNode;
 };
@@ -40,6 +42,10 @@ const Layout = ({ children }: Props) => {
           <Link href="/don">Faire un don</Link>
         </li>
       </ul>
+
+      <Search />
+
+      <hr />
 
       {children}
     </div>
