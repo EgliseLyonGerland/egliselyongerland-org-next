@@ -94,7 +94,7 @@ const Blog = () => {
 
   return (
     <div>
-      <h2>Blog</h2>
+      <h1>Blog</h1>
 
       <div>
         <select
