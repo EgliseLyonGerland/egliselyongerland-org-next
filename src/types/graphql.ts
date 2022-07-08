@@ -7804,17 +7804,28 @@ export type GetBlogIndexPostsQueryVariables = Exact<{
   book: InputMaybe<Scalars["String"]>;
   chapter: InputMaybe<Scalars["Int"]>;
   verse: InputMaybe<Scalars["Int"]>;
+  after: InputMaybe<Scalars["String"]>;
 }>;
 
 export type GetBlogIndexPostsQuery = {
   __typename?: "RootQuery";
   posts: {
     __typename?: "RootQueryToPostConnection";
-    nodes: Array<{
-      __typename?: "Post";
-      databaseId: number;
-      title: string;
-      bibleRefs: Array<{ __typename?: "BibleRef"; raw: string }>;
+    pageInfo: {
+      __typename?: "WPPageInfo";
+      startCursor: string;
+      endCursor: string;
+      hasNextPage: boolean;
+    };
+    edges: Array<{
+      __typename?: "RootQueryToPostConnectionEdge";
+      cursor: string;
+      node: {
+        __typename?: "Post";
+        databaseId: number;
+        title: string;
+        bibleRefs: Array<{ __typename?: "BibleRef"; raw: string }>;
+      };
     }>;
   };
 };
@@ -8011,20 +8022,34 @@ export type GetPageQueryResult = Apollo.QueryResult<
   GetPageQueryVariables
 >;
 export const GetBlogIndexPostsDocument = gql`
-  query GetBlogIndexPosts($book: String, $chapter: Int, $verse: Int) {
+  query GetBlogIndexPosts(
+    $book: String
+    $chapter: Int
+    $verse: Int
+    $after: String
+  ) {
     posts(
-      first: 100
+      first: 10
+      after: $after
       where: {
         bibleRefBook: $book
         bibleRefChapter: $chapter
         bibleRefVerse: $verse
       }
     ) {
-      nodes {
-        databaseId
-        title
-        bibleRefs {
-          raw
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+      }
+      edges {
+        cursor
+        node {
+          databaseId
+          title
+          bibleRefs {
+            raw
+          }
         }
       }
     }
@@ -8046,6 +8071,7 @@ export const GetBlogIndexPostsDocument = gql`
  *      book: // value for 'book'
  *      chapter: // value for 'chapter'
  *      verse: // value for 'verse'
+ *      after: // value for 'after'
  *   },
  * });
  */

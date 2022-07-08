@@ -4,11 +4,13 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 
 import Layout from "../components/layout";
-import { getClient } from "../services/appolo";
+import { useApollo } from "../services/appolo";
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const apolloClient = useApollo(pageProps);
+
   return (
-    <ApolloProvider client={getClient()}>
+    <ApolloProvider client={apolloClient}>
       <Layout>
         <Head>
           <title>Église Lyon Gerland</title>
