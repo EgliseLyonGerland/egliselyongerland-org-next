@@ -4443,8 +4443,14 @@ export type Post_Infos = AcfFieldGroup & {
 /** The reading setting type */
 export type ReadingSettings = {
   __typename?: "ReadingSettings";
+  /** The ID of the page that should display the latest posts */
+  pageForPosts: Maybe<Scalars["Int"]>;
+  /** The ID of the page that should be displayed on the front page */
+  pageOnFront: Maybe<Scalars["Int"]>;
   /** Blog pages show at most. */
   postsPerPage: Maybe<Scalars["Int"]>;
+  /** What to show on the front page */
+  showOnFront: Maybe<Scalars["String"]>;
 };
 
 /** Input for the refreshJwtAuthToken mutation */
@@ -6206,7 +6212,13 @@ export type Settings = {
   /** Settings of the the string Settings Group */
   generalSettingsUrl: Maybe<Scalars["String"]>;
   /** Settings of the the integer Settings Group */
+  readingSettingsPageForPosts: Maybe<Scalars["Int"]>;
+  /** Settings of the the integer Settings Group */
+  readingSettingsPageOnFront: Maybe<Scalars["Int"]>;
+  /** Settings of the the integer Settings Group */
   readingSettingsPostsPerPage: Maybe<Scalars["Int"]>;
+  /** Settings of the the string Settings Group */
+  readingSettingsShowOnFront: Maybe<Scalars["String"]>;
   /** Settings of the the integer Settings Group */
   writingSettingsDefaultCategory: Maybe<Scalars["Int"]>;
   /** Settings of the the string Settings Group */
@@ -6968,8 +6980,14 @@ export type UpdateSettingsInput = {
   generalSettingsTitle: InputMaybe<Scalars["String"]>;
   /** Site URL. */
   generalSettingsUrl: InputMaybe<Scalars["String"]>;
+  /** The ID of the page that should display the latest posts */
+  readingSettingsPageForPosts: InputMaybe<Scalars["Int"]>;
+  /** The ID of the page that should be displayed on the front page */
+  readingSettingsPageOnFront: InputMaybe<Scalars["Int"]>;
   /** Blog pages show at most. */
   readingSettingsPostsPerPage: InputMaybe<Scalars["Int"]>;
+  /** What to show on the front page */
+  readingSettingsShowOnFront: InputMaybe<Scalars["String"]>;
   /** Default post category. */
   writingSettingsDefaultCategory: InputMaybe<Scalars["Int"]>;
   /** Default post format. */
