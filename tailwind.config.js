@@ -8,11 +8,12 @@ module.exports = {
     extend: {
       fontFamily: {
         playfair: '"Playfair Display", serif',
+        suez: "'Suez One', serif",
       },
       colors: {
-        primary: "#32302B",
-        secondary: "#F3E9DF",
-        tertiary: "#4946FF",
+        chaos: "#32302B",
+        sand: "#F3E9DF",
+        pop: "#4946FF",
       },
     },
   },

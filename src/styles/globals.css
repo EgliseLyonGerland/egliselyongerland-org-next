@@ -4,7 +4,7 @@
 
 @layer base {
   html {
-    @apply text-primary;
+    @apply text-chaos;
     @apply font-playfair;
   }
 }
