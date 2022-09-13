@@ -24,7 +24,7 @@ const Button = ({
 
   return (
     <Component
-      className="bg-tertiary text-white h-14 px-6 rounded-md shadow-md flex-center"
+      className="bg-pop text-white h-12 px-5 rounded-md shadow-md flex-center"
       {...props}
     >
       {children}
