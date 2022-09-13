@@ -14,7 +14,7 @@ const Header = () => {
   return (
     <header
       role="banner"
-      className="flex items-center justify-between w-full h-[120px] px-6 top-0 sticky"
+      className="flex items-center justify-between w-full h-[120px] px-6 top-0 sticky max-w-screen-2xl mx-auto z-20"
     >
       <div className="xl:w-1/2">
         <Link href="/">
