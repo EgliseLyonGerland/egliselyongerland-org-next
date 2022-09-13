@@ -19,7 +19,7 @@ const handler: NextApiHandler<string> = async (req, res) => {
     case "post_delete":
       const post = req.body.post as Post;
 
-      path = `/blog/post/${post.ID}`;
+      path = `/resources/${post.ID}`;
       break;
     default:
       res.status(400).send("Invalid entry");

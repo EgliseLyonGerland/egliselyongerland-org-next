@@ -7818,14 +7818,34 @@ export type GetPageQuery = {
   page: { __typename?: "Page"; title: string; content: string };
 };
 
-export type GetBlogIndexPostsQueryVariables = Exact<{
+export type GetPostsQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetPostsQuery = {
+  __typename?: "RootQuery";
+  posts: {
+    __typename?: "RootQueryToPostConnection";
+    nodes: Array<{ __typename?: "Post"; databaseId: number }>;
+  };
+};
+
+export type GetPostQueryVariables = Exact<{
+  id: Scalars["ID"];
+  preview: InputMaybe<Scalars["Boolean"]>;
+}>;
+
+export type GetPostQuery = {
+  __typename?: "RootQuery";
+  post: { __typename?: "Post"; title: string; content: string };
+};
+
+export type GetResourcesQueryVariables = Exact<{
   book: InputMaybe<Scalars["String"]>;
   chapter: InputMaybe<Scalars["Int"]>;
   verse: InputMaybe<Scalars["Int"]>;
   after: InputMaybe<Scalars["String"]>;
 }>;
 
-export type GetBlogIndexPostsQuery = {
+export type GetResourcesQuery = {
   __typename?: "RootQuery";
   posts: {
     __typename?: "RootQueryToPostConnection";
@@ -7846,26 +7866,6 @@ export type GetBlogIndexPostsQuery = {
       };
     }>;
   };
-};
-
-export type GetPostsQueryVariables = Exact<{ [key: string]: never }>;
-
-export type GetPostsQuery = {
-  __typename?: "RootQuery";
-  posts: {
-    __typename?: "RootQueryToPostConnection";
-    nodes: Array<{ __typename?: "Post"; databaseId: number }>;
-  };
-};
-
-export type GetPostQueryVariables = Exact<{
-  id: Scalars["ID"];
-  preview: InputMaybe<Scalars["Boolean"]>;
-}>;
-
-export type GetPostQuery = {
-  __typename?: "RootQuery";
-  post: { __typename?: "Post"; title: string; content: string };
 };
 
 export const GetSearchDocument = gql`
@@ -8039,94 +8039,6 @@ export type GetPageQueryResult = Apollo.QueryResult<
   GetPageQuery,
   GetPageQueryVariables
 >;
-export const GetBlogIndexPostsDocument = gql`
-  query GetBlogIndexPosts(
-    $book: String
-    $chapter: Int
-    $verse: Int
-    $after: String
-  ) {
-    posts(
-      first: 10
-      after: $after
-      where: {
-        bibleRefBook: $book
-        bibleRefChapter: $chapter
-        bibleRefVerse: $verse
-      }
-    ) {
-      pageInfo {
-        startCursor
-        endCursor
-        hasNextPage
-      }
-      edges {
-        cursor
-        node {
-          databaseId
-          title
-          bibleRefs {
-            raw
-          }
-        }
-      }
-    }
-  }
-`;
-
-/**
- * __useGetBlogIndexPostsQuery__
- *
- * To run a query within a React component, call `useGetBlogIndexPostsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetBlogIndexPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetBlogIndexPostsQuery({
- *   variables: {
- *      book: // value for 'book'
- *      chapter: // value for 'chapter'
- *      verse: // value for 'verse'
- *      after: // value for 'after'
- *   },
- * });
- */
-export function useGetBlogIndexPostsQuery(
-  baseOptions?: Apollo.QueryHookOptions<
-    GetBlogIndexPostsQuery,
-    GetBlogIndexPostsQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<
-    GetBlogIndexPostsQuery,
-    GetBlogIndexPostsQueryVariables
-  >(GetBlogIndexPostsDocument, options);
-}
-export function useGetBlogIndexPostsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    GetBlogIndexPostsQuery,
-    GetBlogIndexPostsQueryVariables
-  >
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<
-    GetBlogIndexPostsQuery,
-    GetBlogIndexPostsQueryVariables
-  >(GetBlogIndexPostsDocument, options);
-}
-export type GetBlogIndexPostsQueryHookResult = ReturnType<
-  typeof useGetBlogIndexPostsQuery
->;
-export type GetBlogIndexPostsLazyQueryHookResult = ReturnType<
-  typeof useGetBlogIndexPostsLazyQuery
->;
-export type GetBlogIndexPostsQueryResult = Apollo.QueryResult<
-  GetBlogIndexPostsQuery,
-  GetBlogIndexPostsQueryVariables
->;
 export const GetPostsDocument = gql`
   query GetPosts {
     posts(first: 100) {
@@ -8230,4 +8142,92 @@ export type GetPostLazyQueryHookResult = ReturnType<typeof useGetPostLazyQuery>;
 export type GetPostQueryResult = Apollo.QueryResult<
   GetPostQuery,
   GetPostQueryVariables
+>;
+export const GetResourcesDocument = gql`
+  query GetResources(
+    $book: String
+    $chapter: Int
+    $verse: Int
+    $after: String
+  ) {
+    posts(
+      first: 10
+      after: $after
+      where: {
+        bibleRefBook: $book
+        bibleRefChapter: $chapter
+        bibleRefVerse: $verse
+      }
+    ) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+      }
+      edges {
+        cursor
+        node {
+          databaseId
+          title
+          bibleRefs {
+            raw
+          }
+        }
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetResourcesQuery__
+ *
+ * To run a query within a React component, call `useGetResourcesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetResourcesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetResourcesQuery({
+ *   variables: {
+ *      book: // value for 'book'
+ *      chapter: // value for 'chapter'
+ *      verse: // value for 'verse'
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useGetResourcesQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetResourcesQuery,
+    GetResourcesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetResourcesQuery, GetResourcesQueryVariables>(
+    GetResourcesDocument,
+    options
+  );
+}
+export function useGetResourcesLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetResourcesQuery,
+    GetResourcesQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetResourcesQuery, GetResourcesQueryVariables>(
+    GetResourcesDocument,
+    options
+  );
+}
+export type GetResourcesQueryHookResult = ReturnType<
+  typeof useGetResourcesQuery
+>;
+export type GetResourcesLazyQueryHookResult = ReturnType<
+  typeof useGetResourcesLazyQuery
+>;
+export type GetResourcesQueryResult = Apollo.QueryResult<
+  GetResourcesQuery,
+  GetResourcesQueryVariables
 >;

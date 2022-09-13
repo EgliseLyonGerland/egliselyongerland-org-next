@@ -36,7 +36,7 @@ function getNodeUri(node: Node) {
     return node.uri;
   }
   if ("databaseId" in node) {
-    return `/blog/post/${node.databaseId}`;
+    return `/resources/${node.databaseId}`;
   }
 
   return "#";

@@ -9,17 +9,17 @@ import { useRouter } from "next/router";
 import { books } from "../../config/bible";
 import { addApolloState, getClient } from "../../services/appolo";
 import {
-  GetBlogIndexPostsQuery,
-  GetBlogIndexPostsQueryVariables,
+  GetResourcesQuery,
+  GetResourcesQueryVariables,
 } from "../../types/graphql";
 
 type Props = {
-  posts: GetBlogIndexPostsQuery["posts"];
+  posts: GetResourcesQuery["posts"];
 };
 
-const getBlogIndexPosts = ({ book, chapter, verse }: ParsedUrlQuery = {}) => ({
+const getResources = ({ book, chapter, verse }: ParsedUrlQuery = {}) => ({
   query: gql`
-    query GetBlogIndexPosts(
+    query GetResources(
       $book: String
       $chapter: Int
       $verse: Int
@@ -61,14 +61,14 @@ const getBlogIndexPosts = ({ book, chapter, verse }: ParsedUrlQuery = {}) => ({
   },
 });
 
-const Blog = () => {
+const Resources = () => {
   const router = useRouter();
 
-  const { query, variables } = getBlogIndexPosts(router.query);
+  const { query, variables } = getResources(router.query);
 
   const { refetch, data, fetchMore } = useQuery<
-    GetBlogIndexPostsQuery,
-    GetBlogIndexPostsQueryVariables
+    GetResourcesQuery,
+    GetResourcesQueryVariables
   >(query, {
     variables,
     notifyOnNetworkStatusChange: true,
@@ -77,14 +77,14 @@ const Blog = () => {
   const push = (key: string, value: string) => {
     if (value) {
       router.push({
-        pathname: "/blog",
+        pathname: "/resources",
         query: { ...router.query, [key]: value },
       });
 
       refetch({ ...router.query, [key]: value });
     } else {
       router.push({
-        pathname: "/blog",
+        pathname: "/resources",
         query: omit(router.query, key),
       });
 
@@ -94,7 +94,7 @@ const Blog = () => {
 
   return (
     <div>
-      <h1>Blog</h1>
+      <h1>Resources</h1>
 
       <div>
         <select
@@ -135,7 +135,7 @@ const Blog = () => {
       <ul>
         {data?.posts.edges.map(({ node: post }) => (
           <li key={post.databaseId}>
-            <Link href={`/blog/post/${post.databaseId}`}>{post.title}</Link>
+            <Link href={`/resources/${post.databaseId}`}>{post.title}</Link>
             {post.bibleRefs.length > 0 && (
               <span> ({post.bibleRefs.map((ref) => ref.raw).join(", ")})</span>
             )}
@@ -177,8 +177,8 @@ const Blog = () => {
 export const getStaticProps: GetStaticProps<Props> = async () => {
   const client = getClient();
 
-  await client.query<GetBlogIndexPostsQuery, GetBlogIndexPostsQueryVariables>(
-    getBlogIndexPosts()
+  await client.query<GetResourcesQuery, GetResourcesQueryVariables>(
+    getResources()
   );
 
   return addApolloState(client, {
@@ -186,4 +186,4 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   });
 };
 
-export default Blog;
+export default Resources;

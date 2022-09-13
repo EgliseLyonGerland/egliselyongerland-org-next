@@ -60,7 +60,7 @@ const Header = () => {
             </DropdownMenu.Root>
           </li>
           <li>
-            <Link href="/blog">
+            <Link href="/resources">
               <a className="font-medium text-lg">Ressources</a>
             </Link>
           </li>

@@ -1,13 +1,13 @@
 import { gql } from "@apollo/client";
 import { GetStaticPaths, GetStaticProps } from "next";
 
-import { getClient } from "../../../services/appolo";
+import { getClient } from "../../services/appolo";
 import {
   GetPostQuery,
   GetPostQueryVariables,
   GetPostsQuery,
   GetPostsQueryVariables,
-} from "../../../types/graphql";
+} from "../../types/graphql";
 
 interface Props {
   post: GetPostQuery["post"];
