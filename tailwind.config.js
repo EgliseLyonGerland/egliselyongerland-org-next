@@ -7,8 +7,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        playfair: '"Playfair Display", serif',
         suez: "'Suez One', serif",
+        lora: "'Lora', serif",
       },
       colors: {
         chaos: "#32302B",
