@@ -1,11 +1,11 @@
 import { gql } from "@apollo/client";
 import { LinkIcon } from "@heroicons/react/24/solid";
-import { kebabCase } from "lodash";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
 import { useMemo } from "react";
 
 import Jumbotron from "../../components/jumbotron";
+import { addAnchors, formatTitle } from "../../libs/utils/resource";
 import { getClient } from "../../services/appolo";
 import {
   GetPostQuery,
@@ -17,26 +17,6 @@ import styles from "./[id].module.css";
 
 interface Props {
   post: GetPostQuery["post"];
-}
-
-function addAnchors(
-  text: string
-): [text: string, anchors: { key: string; title: string }[]] {
-  const anchors: { key: string; title: string }[] = [];
-
-  const textWithAnchors = text.replace(
-    /<h2>(.+?)<\/h2>/g,
-    (match, capture: string) => {
-      const result = /(\d+)[^\w]*(.*)/.exec(capture.trim());
-      const label = result?.[2] || capture;
-
-      const anchor = kebabCase(label);
-      anchors.push({ key: anchor, title: label });
-      return `<a name="${anchor}"></a>${match}`;
-    }
-  );
-
-  return [textWithAnchors, anchors];
 }
 
 function Post({ post }: Props) {
@@ -54,8 +34,12 @@ function Post({ post }: Props) {
       <Jumbotron>
         <div className="mx-auto flex min-h-[50vh] max-w-screen-xl justify-between py-12">
           <div>
-            <h1 className="mb-6 max-w-lg font-suez text-6xl leading-snug">
-              {post.title}
+            <h1
+              className={`mb-6 max-w-lg font-suez leading-snug ${
+                post.title.length > 48 ? "text-5xl" : "text-6xl"
+              }`}
+            >
+              {formatTitle(post.title)}
             </h1>
             <div className="flex items-center gap-4 text-xl">
               <Image
