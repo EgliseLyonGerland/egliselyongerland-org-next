@@ -26,7 +26,6 @@ export function formatTitle(title: string): ReactNode {
       if (index === 0) {
         return [curr];
       }
-
       if (curr.length > 1) {
         return [...acc, " ", curr];
       }
@@ -36,7 +35,7 @@ export function formatTitle(title: string): ReactNode {
       return [
         ...acc,
         <span key={index} className="whitespace-nowrap">
-          {last} {curr}
+          {`${last} ${curr}`}
         </span>,
       ];
     }, []);
