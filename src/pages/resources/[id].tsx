@@ -1,6 +1,11 @@
 import { gql } from "@apollo/client";
+import { LinkIcon } from "@heroicons/react/24/solid";
+import { kebabCase } from "lodash";
 import { GetStaticPaths, GetStaticProps } from "next";
+import Image from "next/image";
+import { useMemo } from "react";
 
+import Jumbotron from "../../components/jumbotron";
 import { getClient } from "../../services/appolo";
 import {
   GetPostQuery,
@@ -8,21 +13,149 @@ import {
   GetPostsQuery,
   GetPostsQueryVariables,
 } from "../../types/graphql";
+import styles from "./[id].module.css";
 
 interface Props {
   post: GetPostQuery["post"];
 }
 
+function addAnchors(
+  text: string
+): [text: string, anchors: { key: string; title: string }[]] {
+  const anchors: { key: string; title: string }[] = [];
+
+  const textWithAnchors = text.replace(
+    /<h2>(.+?)<\/h2>/g,
+    (match, capture: string) => {
+      const result = /(\d+)[^\w]*(.*)/.exec(capture.trim());
+      const label = result?.[2] || capture;
+
+      const anchor = kebabCase(label);
+      anchors.push({ key: anchor, title: label });
+      return `<a name="${anchor}"></a>${match}`;
+    }
+  );
+
+  return [textWithAnchors, anchors];
+}
+
 function Post({ post }: Props) {
+  const [content, anchors] = useMemo(
+    () => addAnchors(post?.content || ""),
+    [post]
+  );
+
   if (!post) {
     return "Loading...";
   }
 
   return (
-    <div>
-      <h1>{post.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: post.content }} />
-    </div>
+    <>
+      <Jumbotron>
+        <div className="mx-auto flex min-h-[50vh] max-w-screen-xl justify-between py-12">
+          <div>
+            <h1 className="mb-6 max-w-lg font-suez text-6xl leading-snug">
+              {post.title}
+            </h1>
+            <div className="flex items-center gap-4 text-xl">
+              <Image
+                src={post.author.node.avatar.url}
+                alt={post.author.node.name}
+                width={60}
+                height={60}
+                objectFit="cover"
+                className="rounded-full"
+              />
+              {post.author.node.name}
+            </div>
+          </div>
+          <div className=" sepia-[50%]">
+            {post.featuredImage && (
+              <Image
+                alt={post.title}
+                src={post.featuredImage.node.sourceUrl}
+                width={680}
+                height={430}
+                objectFit="cover"
+                className="rounded-2xl"
+              />
+            )}
+          </div>
+        </div>
+      </Jumbotron>
+      <div className="mx-auto flex max-w-screen-xl justify-between py-12">
+        <div className="max-w-screen-md flex-grow">
+          {content ? (
+            <div
+              className={styles.content}
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
+          ) : (
+            <div className="text-center">
+              <div className="inline-block rounded-lg bg-black/5 p-5 text-center text-xl italic opacity-70">
+                La transcription de cet enregistrement n&rsquo;est pas
+                disponible. <br />
+                Merci de votre compréhension !
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="w-96">
+          <div className="sticky top-[144px] flex flex-col gap-8">
+            {anchors.length > 0 && (
+              <div>
+                <h2 className="mb-6 font-suez text-xl">Sommaire</h2>
+
+                <div className="flex flex-col gap-2">
+                  {anchors.map((anchor, index) => (
+                    <a
+                      href={`#${anchor.key}`}
+                      key={anchor.key}
+                      className="overflow-auto text-ellipsis whitespace-nowrap rounded-md bg-black/5 py-2 pr-4 pl-6 transition-colors hover:bg-pop hover:text-white"
+                    >
+                      {index + 1}. {anchor.title}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+            {post.bibleRefs?.length && (
+              <div>
+                <h2 className="mb-6 font-suez text-xl">Références Bibliques</h2>
+
+                <div className="flex flex-wrap gap-4">
+                  {post.bibleRefs.map(({ raw }) => (
+                    <div
+                      key={raw}
+                      className="rounded-full bg-black/5 px-4 py-1"
+                    >
+                      {raw}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            <div>
+              <h2 className="mb-6 font-suez text-xl">Partager</h2>
+              <div className="flex flex-col gap-4">
+                {["Copier le lien", "Facebook", "Twitter"].map((label) => (
+                  <div
+                    key={label}
+                    className="group flex cursor-pointer items-center gap-4 transition-colors hover:bg-black/5"
+                  >
+                    <div className="rounded-lg bg-black/5 p-3 group-hover:bg-pop group-hover:text-white">
+                      <LinkIcon className="h-6" />
+                    </div>
+                    {label}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 
@@ -65,6 +198,22 @@ export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
         post(id: $id, idType: DATABASE_ID, asPreview: $preview) {
           title
           content
+          author {
+            node {
+              name
+              avatar {
+                url
+              }
+            }
+          }
+          bibleRefs {
+            raw
+          }
+          featuredImage {
+            node {
+              sourceUrl
+            }
+          }
         }
       }
     `,

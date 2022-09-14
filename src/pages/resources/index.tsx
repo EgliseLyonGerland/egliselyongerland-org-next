@@ -6,6 +6,7 @@ import { GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+import Jumbotron from "../../components/jumbotron";
 import { books } from "../../config/bible";
 import { addApolloState, getClient } from "../../services/appolo";
 import {
@@ -94,7 +95,9 @@ const Resources = () => {
 
   return (
     <div>
-      <h1>Resources</h1>
+      <Jumbotron>
+        <h1>Resources</h1>
+      </Jumbotron>
 
       <div>
         <select

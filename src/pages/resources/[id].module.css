@@ -1,0 +1,9 @@
+.content {
+  @apply -mt-4 text-lg leading-8;
+}
+.content h2 {
+  @apply my-10 mt-14 font-suez text-3xl;
+}
+.content p {
+  @apply my-4;
+}

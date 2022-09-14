@@ -7835,7 +7835,24 @@ export type GetPostQueryVariables = Exact<{
 
 export type GetPostQuery = {
   __typename?: "RootQuery";
-  post: { __typename?: "Post"; title: string; content: string };
+  post: {
+    __typename?: "Post";
+    title: string;
+    content: string;
+    author: {
+      __typename?: "NodeWithAuthorToUserConnectionEdge";
+      node: {
+        __typename?: "User";
+        name: string;
+        avatar: { __typename?: "Avatar"; url: string };
+      };
+    };
+    bibleRefs: Array<{ __typename?: "BibleRef"; raw: string }>;
+    featuredImage: {
+      __typename?: "NodeWithFeaturedImageToMediaItemConnectionEdge";
+      node: { __typename?: "MediaItem"; sourceUrl: string };
+    };
+  };
 };
 
 export type GetResourcesQueryVariables = Exact<{
@@ -8098,6 +8115,22 @@ export const GetPostDocument = gql`
     post(id: $id, idType: DATABASE_ID, asPreview: $preview) {
       title
       content
+      author {
+        node {
+          name
+          avatar {
+            url
+          }
+        }
+      }
+      bibleRefs {
+        raw
+      }
+      featuredImage {
+        node {
+          sourceUrl
+        }
+      }
     }
   }
 `;
