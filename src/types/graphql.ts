@@ -7843,6 +7843,7 @@ export type GetPostQuery = {
       __typename?: "NodeWithAuthorToUserConnectionEdge";
       node: {
         __typename?: "User";
+        databaseId: number;
         name: string;
         avatar: { __typename?: "Avatar"; url: string };
       };
@@ -8117,6 +8118,7 @@ export const GetPostDocument = gql`
       content
       author {
         node {
+          databaseId
           name
           avatar {
             url

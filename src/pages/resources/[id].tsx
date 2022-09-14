@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import { LinkIcon } from "@heroicons/react/24/solid";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { useMemo } from "react";
 
 import Jumbotron from "../../components/jumbotron";
@@ -45,15 +46,17 @@ function Post({ post }: Props) {
               <Image
                 src={post.author.node.avatar.url}
                 alt={post.author.node.name}
-                width={60}
-                height={60}
+                width={48}
+                height={48}
                 objectFit="cover"
                 className="rounded-full"
               />
-              {post.author.node.name}
+              <Link href={`/resources?author=${post.author.node.databaseId}`}>
+                <a>{post.author.node.name}</a>
+              </Link>
             </div>
           </div>
-          <div className=" sepia-[50%]">
+          <div className="self-end sepia-[50%]">
             {post.featuredImage && (
               <Image
                 alt={post.title}
@@ -184,6 +187,7 @@ export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
           content
           author {
             node {
+              databaseId
               name
               avatar {
                 url

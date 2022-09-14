@@ -6,4 +6,7 @@
   html {
     @apply font-lora text-chaos;
   }
+  a {
+    @apply hover:text-blue-500;
+  }
 }
