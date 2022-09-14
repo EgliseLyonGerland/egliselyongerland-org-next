@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["localhost", "1.gravatar.com"],
+    domains: ["localhost", "wp.egliselyongerland.org", "1.gravatar.com"],
   },
 };
 
