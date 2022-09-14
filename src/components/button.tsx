@@ -1,35 +1,27 @@
-import { ReactNode } from "react";
+import { ElementType, forwardRef, ReactNode } from "react";
 
-type Props = {
+type Props<D extends ElementType> = {
   children: ReactNode;
-  as?: "button" | "a";
+  as?: D;
   href?: string;
   onClick?: () => void;
-};
+} & React.ComponentPropsWithoutRef<D>;
 
-const Button = ({
-  children,
-  as: Component = "button",
-  href,
-  onClick,
-}: Props) => {
-  const props: Partial<Pick<Props, "href" | "onClick">> = {};
-
-  if (Component === "a" && href) {
-    props.href = href;
-  }
-  if (onClick) {
-    props.onClick = onClick;
-  }
+const Button = forwardRef(function Button<D extends ElementType = "button">(
+  { children, as, ...rest }: Props<D>,
+  ref: React.ComponentPropsWithRef<D>["ref"]
+) {
+  const Component = as || "button";
 
   return (
     <Component
       className="bg-pop text-white h-12 px-5 rounded-md shadow-md flex-center"
-      {...props}
+      ref={ref}
+      {...rest}
     >
       {children}
     </Component>
   );
-};
+});
 
 export default Button;
