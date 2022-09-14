@@ -4,6 +4,6 @@
 
 @layer base {
   html {
-    @apply text-chaos font-lora;
+    @apply font-lora text-chaos;
   }
 }

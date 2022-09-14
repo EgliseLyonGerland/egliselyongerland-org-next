@@ -15,7 +15,7 @@ const Button = forwardRef(function Button<D extends ElementType = "button">(
 
   return (
     <Component
-      className="bg-pop text-white h-12 px-5 rounded-md shadow-md flex-center"
+      className="h-12 rounded-md bg-pop px-5 text-white shadow-md flex-center"
       ref={ref}
       {...rest}
     >
