@@ -8092,7 +8092,7 @@ export type GetPageQueryResult = Apollo.QueryResult<
 >;
 export const GetPostsDocument = gql`
   query GetPosts {
-    posts(first: 100) {
+    posts(first: 10) {
       nodes {
         databaseId
       }
