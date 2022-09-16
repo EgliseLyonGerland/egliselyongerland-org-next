@@ -38,7 +38,7 @@
     "@types/react-dom": "18.0.6",
     "@typescript-eslint/eslint-plugin": "5.36.1",
     "autoprefixer": "10.4.8",
-    "concurrently": "7.3.0",
+    "concurrently": "7.4.0",
     "eslint": "8.23.0",
     "eslint-config-next": "12.2.5",
     "graphql": "16.6.0",
