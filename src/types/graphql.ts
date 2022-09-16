@@ -316,7 +316,7 @@ export type CategoryToContentNodeConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -397,7 +397,7 @@ export type CategoryToPostConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -538,6 +538,14 @@ export type CommentAuthorAvatarArgs = {
   rating: InputMaybe<AvatarRatingEnum>;
   size?: InputMaybe<Scalars["Int"]>;
 };
+
+/** The Type of Identifier used to fetch a single comment node. Default is "ID". To be used along with the "id" field. */
+export enum CommentNodeIdTypeEnum {
+  /** Identify a resource by the Database ID. */
+  DatabaseId = "DATABASE_ID",
+  /** Identify a resource by the (hashed) Global ID. */
+  Id = "ID",
+}
 
 /** Connection between the Comment type and the Comment type */
 export type CommentToCommentConnection = {
@@ -1045,7 +1053,7 @@ export type ContentTypeToContentNodeConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -1766,7 +1774,7 @@ export type HierarchicalContentNodeToContentNodeAncestorsConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -1828,7 +1836,7 @@ export type HierarchicalContentNodeToContentNodeChildrenConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -1911,6 +1919,12 @@ export type MediaDetails = {
   sizes: Maybe<Array<Maybe<MediaSize>>>;
   /** The width of the mediaItem */
   width: Maybe<Scalars["Int"]>;
+};
+
+/** File details for a Media Item */
+export type MediaDetailsSizesArgs = {
+  exclude: InputMaybe<Array<InputMaybe<MediaItemSizeEnum>>>;
+  include: InputMaybe<Array<InputMaybe<MediaItemSizeEnum>>>;
 };
 
 /** The mediaItem type */
@@ -2438,7 +2452,7 @@ export type MenuItemToMenuItemConnectionEdge = {
 
 /** Arguments for filtering the MenuItemToMenuItemConnection connection */
 export type MenuItemToMenuItemConnectionWhereArgs = {
-  /** The ID of the object */
+  /** The database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** The menu location for the menu being queried */
   location: InputMaybe<MenuLocationEnum>;
@@ -2497,7 +2511,7 @@ export type MenuToMenuItemConnectionEdge = {
 
 /** Arguments for filtering the MenuToMenuItemConnection connection */
 export type MenuToMenuItemConnectionWhereArgs = {
-  /** The ID of the object */
+  /** The database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** The menu location for the menu being queried */
   location: InputMaybe<MenuLocationEnum>;
@@ -3201,7 +3215,7 @@ export type PageToRevisionConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -3634,7 +3648,7 @@ export type PostFormatToContentNodeConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -3708,7 +3722,7 @@ export type PostFormatToPostConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -4148,7 +4162,7 @@ export type PostToRevisionConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -4926,6 +4940,7 @@ export type RootQueryCategoryArgs = {
 /** The root entry point into the Graph */
 export type RootQueryCommentArgs = {
   id: Scalars["ID"];
+  idType: InputMaybe<CommentNodeIdTypeEnum>;
 };
 
 /** The root entry point into the Graph */
@@ -5393,7 +5408,7 @@ export type RootQueryToContentNodeConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -5453,7 +5468,7 @@ export type RootQueryToContentRevisionUnionConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -5579,7 +5594,7 @@ export type RootQueryToMediaItemConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -5633,7 +5648,7 @@ export type RootQueryToMenuConnectionEdge = {
 
 /** Arguments for filtering the RootQueryToMenuConnection connection */
 export type RootQueryToMenuConnectionWhereArgs = {
-  /** The ID of the object */
+  /** The database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** The menu location for the menu being queried */
   location: InputMaybe<MenuLocationEnum>;
@@ -5663,7 +5678,7 @@ export type RootQueryToMenuItemConnectionEdge = {
 
 /** Arguments for filtering the RootQueryToMenuItemConnection connection */
 export type RootQueryToMenuItemConnectionWhereArgs = {
-  /** The ID of the object */
+  /** The database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** The menu location for the menu being queried */
   location: InputMaybe<MenuLocationEnum>;
@@ -5707,7 +5722,7 @@ export type RootQueryToPageConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -5817,7 +5832,7 @@ export type RootQueryToPostConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -6355,7 +6370,7 @@ export type TagToContentNodeConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -6429,7 +6444,7 @@ export type TagToPostConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -7405,7 +7420,7 @@ export type UserToContentRevisionUnionConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -7511,7 +7526,7 @@ export type UserToMediaItemConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -7577,7 +7592,7 @@ export type UserToPageConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -7651,7 +7666,7 @@ export type UserToPostConnectionWhereArgs = {
   dateQuery: InputMaybe<DateQueryInput>;
   /** True for objects with passwords; False for objects without passwords; null for all objects with or without passwords */
   hasPassword: InputMaybe<Scalars["Boolean"]>;
-  /** Specific ID of the object */
+  /** Specific database ID of the object */
   id: InputMaybe<Scalars["Int"]>;
   /** Array of IDs for the objects to retrieve */
   in: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
@@ -7845,6 +7860,8 @@ export type GetPostQuery = {
         __typename?: "User";
         databaseId: number;
         name: string;
+        firstName: string;
+        lastName: string;
         avatar: { __typename?: "Avatar"; url: string };
       };
     };
@@ -7880,7 +7897,23 @@ export type GetResourcesQuery = {
         __typename?: "Post";
         databaseId: number;
         title: string;
+        date: string;
+        author: {
+          __typename?: "NodeWithAuthorToUserConnectionEdge";
+          node: {
+            __typename?: "User";
+            name: string;
+            firstName: string;
+            lastName: string;
+            avatar: { __typename?: "Avatar"; url: string };
+          };
+        };
+        featuredImage: {
+          __typename?: "NodeWithFeaturedImageToMediaItemConnectionEdge";
+          node: { __typename?: "MediaItem"; sourceUrl: string };
+        };
         bibleRefs: Array<{ __typename?: "BibleRef"; raw: string }>;
+        event: { __typename?: "Post_Event"; sermonDate: string };
       };
     }>;
   };
@@ -8120,6 +8153,8 @@ export const GetPostDocument = gql`
         node {
           databaseId
           name
+          firstName
+          lastName
           avatar {
             url
           }
@@ -8204,8 +8239,27 @@ export const GetResourcesDocument = gql`
         node {
           databaseId
           title
+          date
+          author {
+            node {
+              name
+              firstName
+              lastName
+              avatar {
+                url
+              }
+            }
+          }
+          featuredImage {
+            node {
+              sourceUrl
+            }
+          }
           bibleRefs {
             raw
+          }
+          event {
+            sermonDate
           }
         }
       }

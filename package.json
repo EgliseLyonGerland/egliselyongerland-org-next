@@ -15,7 +15,9 @@
   "dependencies": {
     "@apollo/client": "3.6.9",
     "@heroicons/react": "2.0.10",
+    "@radix-ui/react-avatar": "1.0.0",
     "@radix-ui/react-dropdown-menu": "1.0.0",
+    "date-fns": "2.29.3",
     "deepmerge": "4.2.2",
     "lodash": "4.17.21",
     "next": "12.2.5",

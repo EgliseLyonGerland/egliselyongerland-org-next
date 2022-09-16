@@ -25,6 +25,11 @@ module.exports = {
           alignItems: "center",
           justifyContent: "center",
         },
+        ".inline-flex-center": {
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+        },
       });
     }),
   ],

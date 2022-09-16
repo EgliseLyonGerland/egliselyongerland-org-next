@@ -3,10 +3,10 @@ import { ParsedUrlQuery } from "querystring";
 import { gql, useQuery } from "@apollo/client";
 import { omit } from "lodash";
 import { GetStaticProps } from "next";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 import Jumbotron from "../../components/jumbotron";
+import Item from "../../components/resources/item";
 import { books } from "../../config/bible";
 import { addApolloState, getClient } from "../../services/appolo";
 import {
@@ -46,8 +46,28 @@ const getResources = ({ book, chapter, verse }: ParsedUrlQuery = {}) => ({
           node {
             databaseId
             title
+            date
+            author {
+              node {
+                name
+                firstName
+                lastName
+
+                avatar {
+                  url
+                }
+              }
+            }
+            featuredImage {
+              node {
+                sourceUrl
+              }
+            }
             bibleRefs {
               raw
+            }
+            event {
+              sermonDate
             }
           }
         }
@@ -96,83 +116,91 @@ const Resources = () => {
   return (
     <div>
       <Jumbotron>
-        <h1>Resources</h1>
+        <div className="py-20 flex-center">
+          <h1 className="mb-6 max-w-lg font-suez text-5xl">Ressources</h1>
+        </div>
       </Jumbotron>
 
-      <div>
-        <select
-          defaultValue={router.query.book}
-          onChange={(event) => {
-            push("book", event.target.value);
-          }}
-        >
-          <option value="">Tous</option>
-          {books.map((book) => (
-            <option key={book} value={book}>
-              {book}
-            </option>
+      <div className="mx-auto flex max-w-screen-xl justify-between py-12">
+        <div className="flex max-w-screen-md flex-grow flex-col gap-6">
+          {data?.posts.edges.map(({ node: post }) => (
+            <Item key={post.databaseId} data={post}></Item>
           ))}
-        </select>
 
-        <input
-          placeholder="Chapitre"
-          defaultValue={router.query.chapter}
-          disabled={!router.query.book}
-          style={{ width: 30 }}
-          onChange={(event) => {
-            push("chapter", event.target.value);
-          }}
-        />
-
-        <input
-          placeholder="Verset"
-          defaultValue={router.query.verse}
-          disabled={!router.query.book || !router.query.chapter}
-          style={{ width: 30 }}
-          onChange={(event) => {
-            push("verse", event.target.value);
-          }}
-        />
-      </div>
-
-      <ul>
-        {data?.posts.edges.map(({ node: post }) => (
-          <li key={post.databaseId}>
-            <Link href={`/resources/${post.databaseId}`}>{post.title}</Link>
-            {post.bibleRefs.length > 0 && (
-              <span> ({post.bibleRefs.map((ref) => ref.raw).join(", ")})</span>
-            )}
-          </li>
-        ))}
-      </ul>
-
-      {data?.posts.pageInfo.hasNextPage && (
-        <button
-          onClick={() => {
-            fetchMore({
-              variables: {
-                after: data?.posts.pageInfo.endCursor,
-              },
-              updateQuery: (prev, { fetchMoreResult }) => {
-                const {
-                  edges,
-                  pageInfo: { endCursor },
-                } = fetchMoreResult.posts;
-
-                return {
-                  ...fetchMoreResult,
-                  posts: {
-                    pageInfo: { ...fetchMoreResult.posts.pageInfo, endCursor },
-                    edges: [...prev.posts.edges, ...edges],
+          {data?.posts.pageInfo.hasNextPage && (
+            <button
+              onClick={() => {
+                fetchMore({
+                  variables: {
+                    after: data?.posts.pageInfo.endCursor,
                   },
-                };
-              },
-            });
-          }}
-        >
-          Charger plus
-        </button>
-      )}
+                  updateQuery: (prev, { fetchMoreResult }) => {
+                    const {
+                      edges,
+                      pageInfo: { endCursor },
+                    } = fetchMoreResult.posts;
+
+                    return {
+                      ...fetchMoreResult,
+                      posts: {
+                        pageInfo: {
+                          ...fetchMoreResult.posts.pageInfo,
+                          endCursor,
+                        },
+                        edges: [...prev.posts.edges, ...edges],
+                      },
+                    };
+                  },
+                });
+              }}
+            >
+              Charger plus
+            </button>
+          )}
+        </div>
+        <div className="w-[1px] self-stretch bg-black/20"></div>
+        <div className="w-96">
+          <div className="sticky top-[144px] flex flex-col gap-8">
+            <h3 className="mb-6 font-suez text-xl">Rechercher</h3>
+
+            <h3 className="mb-6 font-suez text-xl">Filtrer</h3>
+
+            <select
+              defaultValue={router.query.book}
+              onChange={(event) => {
+                push("book", event.target.value);
+              }}
+            >
+              <option value="">Tous</option>
+              {books.map((book) => (
+                <option key={book} value={book}>
+                  {book}
+                </option>
+              ))}
+            </select>
+
+            <input
+              placeholder="Chapitre"
+              defaultValue={router.query.chapter}
+              disabled={!router.query.book}
+              style={{ width: 30 }}
+              onChange={(event) => {
+                push("chapter", event.target.value);
+              }}
+            />
+
+            <input
+              placeholder="Verset"
+              defaultValue={router.query.verse}
+              disabled={!router.query.book || !router.query.chapter}
+              style={{ width: 30 }}
+              onChange={(event) => {
+                push("verse", event.target.value);
+              }}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

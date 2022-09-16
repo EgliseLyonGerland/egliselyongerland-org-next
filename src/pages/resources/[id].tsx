@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
 
+import Avatar from "../../components/avatar";
 import Jumbotron from "../../components/jumbotron";
 import { addAnchors, formatTitle } from "../../libs/utils/resource";
 import { getClient } from "../../services/appolo";
@@ -43,13 +44,10 @@ function Post({ post }: Props) {
               {formatTitle(post.title)}
             </h1>
             <div className="flex items-center gap-4 text-xl">
-              <Image
-                src={post.author.node.avatar.url}
-                alt={post.author.node.name}
-                width={48}
-                height={48}
-                objectFit="cover"
-                className="rounded-full"
+              <Avatar
+                firstName={post.author.node.firstName}
+                lastName={post.author.node.lastName}
+                url={post.author.node.avatar.url}
               />
               <Link href={`/resources?author=${post.author.node.databaseId}`}>
                 <a>{post.author.node.name}</a>
@@ -87,7 +85,6 @@ function Post({ post }: Props) {
             </div>
           )}
         </div>
-
         <div className="w-96">
           <div className="sticky top-[144px] flex flex-col gap-8">
             {anchors.length > 0 && (
@@ -189,6 +186,8 @@ export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
             node {
               databaseId
               name
+              firstName
+              lastName
               avatar {
                 url
               }
