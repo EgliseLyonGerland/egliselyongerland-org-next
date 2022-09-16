@@ -5,17 +5,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
 
-import Avatar from "../../components/avatar";
-import Jumbotron from "../../components/jumbotron";
-import { addAnchors, formatTitle } from "../../libs/utils/resource";
-import { getClient } from "../../services/appolo";
+import Avatar from "../../../components/avatar";
+import Jumbotron from "../../../components/jumbotron";
+import { addAnchors, formatTitle } from "../../../libs/utils/resource";
+import { getClient } from "../../../services/appolo";
 import {
   GetPostQuery,
   GetPostQueryVariables,
   GetPostsQuery,
   GetPostsQueryVariables,
-} from "../../types/graphql";
-import styles from "./[id].module.css";
+} from "../../../types/graphql";
+import styles from "./index.module.css";
 
 interface Props {
   post: GetPostQuery["post"];

@@ -1,14 +1,14 @@
 import { gql } from "@apollo/client";
 import { GetStaticPaths, GetStaticProps } from "next";
 
-import { getClient } from "../services/appolo";
+import { getClient } from "../../services/appolo";
 import {
   GetPageQuery,
   GetPageQueryVariables,
   GetPagesQuery,
   GetPagesQueryVariables,
   PageIdType,
-} from "../types/graphql";
+} from "../../types/graphql";
 
 type Props = {
   page: GetPageQuery["page"];
