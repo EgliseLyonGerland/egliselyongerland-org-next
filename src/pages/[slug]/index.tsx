@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import { GetStaticPaths, GetStaticProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import { getClient } from "../../services/appolo";
 import {
@@ -44,11 +45,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
   });
 
   return {
-    paths: data.pages.nodes.map((node) => ({
-      params: {
-        slug: node.slug,
-      },
-    })),
+    paths: data.pages.nodes.reduce<
+      { params: { slug: string }; locale: string }[]
+    >(
+      (acc, node) => [
+        ...acc,
+        { params: { slug: node.slug }, locale: "fr" },
+        { params: { slug: node.slug }, locale: "en" },
+      ],
+      []
+    ),
     fallback: true,
   };
 };
@@ -57,7 +63,7 @@ export const getStaticProps: GetStaticProps<
   Props,
   { slug: string },
   { id: number }
-> = async ({ params, preview = false, previewData }) => {
+> = async ({ params, preview = false, previewData, locale }) => {
   const { data } = await getClient(preview).query<
     GetPageQuery,
     GetPageQueryVariables
@@ -86,6 +92,7 @@ export const getStaticProps: GetStaticProps<
   return {
     props: {
       page: data.page,
+      ...(await serverSideTranslations(locale || "fr")),
     },
     revalidate: 10,
   };

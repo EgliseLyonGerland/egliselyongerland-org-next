@@ -1,5 +1,6 @@
 import { MagnifyingGlassIcon as SearchIcon } from "@heroicons/react/24/solid";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { useTranslation } from "next-i18next";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,6 +12,8 @@ import Button from "./button";
 const label = "Église Lyon Gerland";
 
 const Header = () => {
+  const { t } = useTranslation();
+
   return (
     <header role="banner" className="absolute top-0 w-full">
       <div className="fixed top-0 z-20 w-screen bg-sand px-6 flex-center">
@@ -35,29 +38,37 @@ const Header = () => {
               <li>
                 <DropdownMenu.Root>
                   <DropdownMenu.Trigger>
-                    <span className="text-lg font-medium">L&apos;église</span>
+                    <span className="whitespace-nowrap text-lg font-medium">
+                      {t("header.church", "L'église")}
+                    </span>
                   </DropdownMenu.Trigger>
                   <DropdownMenu.Content sideOffset={5}>
                     <DropdownMenu.Item>
                       <Link href="/qui-sommes-nous">
-                        <a className="text-lg font-medium">Qui sommes-nous ?</a>
+                        <a className="text-lg font-medium">
+                          {t("header.about-us", "Qui sommes-nous ?")}
+                        </a>
                       </Link>
                     </DropdownMenu.Item>
                     <DropdownMenu.Item>
                       <Link href="/que-croyons-nous">
                         <a className="text-lg font-medium">
-                          Que croyons-nous ?
+                          {t("header.belief", "Que croyons-nous ?")}
                         </a>
                       </Link>
                     </DropdownMenu.Item>
                     <DropdownMenu.Item>
                       <Link href="/le-culte">
-                        <a className="text-lg font-medium">Le culte</a>
+                        <a className="text-lg font-medium">
+                          {t("header.worship", "Le culte")}
+                        </a>
                       </Link>
                     </DropdownMenu.Item>
                     <DropdownMenu.Item>
                       <Link href="/l-equipe">
-                        <a className="text-lg font-medium">L&apos;équipe</a>
+                        <a className="text-lg font-medium">
+                          {t("header.staff", "L'équipe")}
+                        </a>
                       </Link>
                     </DropdownMenu.Item>
                   </DropdownMenu.Content>
@@ -65,12 +76,16 @@ const Header = () => {
               </li>
               <li>
                 <Link href="/resources">
-                  <a className="text-lg font-medium">Ressources</a>
+                  <a className="text-lg font-medium">
+                    {t("header.resources", "Ressources")}
+                  </a>
                 </Link>
               </li>
               <li>
                 <Link href="/contact">
-                  <a className="text-lg font-medium">Contact</a>
+                  <a className="text-lg font-medium">
+                    {t("header.contact", "Contact")}
+                  </a>
                 </Link>
               </li>
               <li>
@@ -80,7 +95,7 @@ const Header = () => {
           </nav>
           <div className="flex justify-end xl:w-1/2">
             <Link href="/don" passHref>
-              <Button as="a">Faire un don</Button>
+              <Button as="a">{t("header.donate", "Faire un don")}</Button>
             </Link>
 
             {/* <Search /> */}

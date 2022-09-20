@@ -1,4 +1,5 @@
-import type { NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Image from "next/image";
 
 import bibleImage from "../images/homeBible.png";
@@ -28,5 +29,11 @@ const Home: NextPage = () => {
     </div>
   );
 };
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale || "fr")),
+  },
+});
 
 export default Home;

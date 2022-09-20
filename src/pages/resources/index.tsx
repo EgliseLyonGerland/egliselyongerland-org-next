@@ -3,6 +3,7 @@ import { ParsedUrlQuery } from "querystring";
 import { gql, useQuery } from "@apollo/client";
 import { omit } from "lodash";
 import { GetStaticProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 
 import Jumbotron from "../../components/jumbotron";
@@ -205,7 +206,7 @@ const Resources = () => {
   );
 };
 
-export const getStaticProps: GetStaticProps<Props> = async () => {
+export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
   const client = getClient();
 
   await client.query<GetResourcesQuery, GetResourcesQueryVariables>(
@@ -213,7 +214,9 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   );
 
   return addApolloState(client, {
-    props: {},
+    props: {
+      ...(await serverSideTranslations(locale || "fr")),
+    },
   });
 };
 

@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import { LinkIcon } from "@heroicons/react/24/solid";
 import { GetStaticPaths, GetStaticProps } from "next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -160,11 +161,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
   });
 
   return {
-    paths: data.posts.nodes.map((post) => ({
-      params: {
-        id: `${post.databaseId}`,
-      },
-    })),
+    paths: data.posts.nodes.reduce<
+      { params: { id: string }; locale: string }[]
+    >(
+      (acc, post) => [
+        ...acc,
+        { params: { id: `${post.databaseId}` }, locale: "fr" },
+        { params: { id: `${post.databaseId}` }, locale: "en" },
+      ],
+      []
+    ),
     fallback: true,
   };
 };
@@ -172,6 +178,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
   params,
   preview = false,
+  locale,
 }) => {
   const { data } = await getClient(preview).query<
     GetPostQuery,
@@ -219,6 +226,7 @@ export const getStaticProps: GetStaticProps<Props, { id: string }> = async ({
   return {
     props: {
       post: data.post,
+      ...(await serverSideTranslations(locale || "fr")),
     },
     revalidate: 10,
   };

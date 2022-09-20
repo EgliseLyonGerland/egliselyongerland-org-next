@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 
+import Footer from "./footer";
 import Header from "./header";
 
 type Props = {
@@ -10,7 +11,8 @@ const Layout = ({ children }: Props) => {
   return (
     <>
       <Header />
-      {children}
+      <div className="min-h-screen">{children}</div>
+      <Footer />
     </>
   );
 };
