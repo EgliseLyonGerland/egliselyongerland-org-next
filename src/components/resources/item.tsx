@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import locale from "date-fns/locale/fr";
-import Image from "next/image";
+import Image from "next/future/image";
 import Link from "next/link";
 
 import { GetResourcesQuery } from "../../types/graphql";
@@ -30,9 +30,8 @@ const Item = ({ data }: Props) => {
         <Image
           src={data.featuredImage.node.sourceUrl}
           alt={data.title}
-          layout="fill"
-          objectFit="cover"
           className="rounded-lg"
+          fill
         />
       </div>
       <div className="flex-grow-0">

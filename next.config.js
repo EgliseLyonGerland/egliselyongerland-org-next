@@ -5,8 +5,13 @@ const { i18n } = require("./next-i18next.config");
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["localhost", "wp.egliselyongerland.org", "www.gravatar.com"],
+    remotePatterns: [
+      { hostname: "localhost" },
+      { hostname: "**.gravatar.com" },
+      { hostname: "egliselyongerland.org" },
+    ],
   },
+
   i18n,
 };
 

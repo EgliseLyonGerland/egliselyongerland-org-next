@@ -1,6 +1,6 @@
 import type { GetStaticProps, NextPage } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import Image from "next/image";
+import Image from "next/future/image";
 
 import bibleImage from "../images/homeBible.png";
 

@@ -1,7 +1,7 @@
 import { MagnifyingGlassIcon as SearchIcon } from "@heroicons/react/24/solid";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useTranslation } from "next-i18next";
-import Image from "next/image";
+import Image from "next/future/image";
 import Link from "next/link";
 
 import brand from "../images/brand.svg";

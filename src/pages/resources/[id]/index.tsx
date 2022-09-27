@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import { LinkIcon } from "@heroicons/react/24/solid";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import Image from "next/image";
+import Image from "next/future/image";
 import Link from "next/link";
 import { useMemo } from "react";
 
@@ -55,15 +55,13 @@ function Post({ post }: Props) {
               </Link>
             </div>
           </div>
-          <div className="self-end sepia-[50%]">
+          <div className="h-[430px] w-[680px] self-end sepia-[50%]">
             {post.featuredImage && (
               <Image
                 alt={post.title}
                 src={post.featuredImage.node.sourceUrl}
-                width={680}
-                height={430}
-                objectFit="cover"
                 className="rounded-2xl"
+                fill
               />
             )}
           </div>
