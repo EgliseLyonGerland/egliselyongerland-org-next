@@ -10,7 +10,11 @@ type Props = {
 const Avatar = ({ firstName, lastName, url }: Props) => {
   return (
     <Root className="relative h-12 w-12 overflow-hidden rounded-full inline-flex-center">
-      <Image src={url} layout="fill" alt={`${firstName} ${lastName}`} />
+      <Image
+        src={url.replace(/\w+\.gravatar\.com/, "www.gravatar.com")}
+        layout="fill"
+        alt={`${firstName} ${lastName}`}
+      />
       <Fallback className="h-full w-full bg-black/50 text-lg font-bold text-white flex-center">
         {`${firstName[0] + lastName[0]}`.toUpperCase()}
       </Fallback>
