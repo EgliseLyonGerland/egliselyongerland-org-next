@@ -7874,6 +7874,8 @@ export type GetPostQuery = {
 };
 
 export type GetResourcesQueryVariables = Exact<{
+  category: InputMaybe<Scalars["Int"]>;
+  author: InputMaybe<Scalars["Int"]>;
   book: InputMaybe<Scalars["String"]>;
   chapter: InputMaybe<Scalars["Int"]>;
   verse: InputMaybe<Scalars["Int"]>;
@@ -7916,6 +7918,20 @@ export type GetResourcesQuery = {
         event: { __typename?: "Post_Event"; sermonDate: string };
       };
     }>;
+  };
+};
+
+export type GetFiltersQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetFiltersQuery = {
+  __typename?: "RootQuery";
+  categories: {
+    __typename?: "RootQueryToCategoryConnection";
+    nodes: Array<{ __typename?: "Category"; databaseId: number; name: string }>;
+  };
+  users: {
+    __typename?: "RootQueryToUserConnection";
+    nodes: Array<{ __typename?: "User"; databaseId: number; name: string }>;
   };
 };
 
@@ -8215,6 +8231,8 @@ export type GetPostQueryResult = Apollo.QueryResult<
 >;
 export const GetResourcesDocument = gql`
   query GetResources(
+    $category: Int
+    $author: Int
     $book: String
     $chapter: Int
     $verse: Int
@@ -8224,6 +8242,8 @@ export const GetResourcesDocument = gql`
       first: 10
       after: $after
       where: {
+        categoryId: $category
+        author: $author
         bibleRefBook: $book
         bibleRefChapter: $chapter
         bibleRefVerse: $verse
@@ -8279,6 +8299,8 @@ export const GetResourcesDocument = gql`
  * @example
  * const { data, loading, error } = useGetResourcesQuery({
  *   variables: {
+ *      category: // value for 'category'
+ *      author: // value for 'author'
  *      book: // value for 'book'
  *      chapter: // value for 'chapter'
  *      verse: // value for 'verse'
@@ -8319,4 +8341,79 @@ export type GetResourcesLazyQueryHookResult = ReturnType<
 export type GetResourcesQueryResult = Apollo.QueryResult<
   GetResourcesQuery,
   GetResourcesQueryVariables
+>;
+export const GetFiltersDocument = gql`
+  query GetFilters {
+    categories(
+      where: {
+        hideEmpty: true
+        parent: 0
+        exclude: [446]
+        orderby: COUNT
+        order: DESC
+      }
+    ) {
+      nodes {
+        databaseId
+        name
+      }
+    }
+    users(
+      first: 100
+      where: { hasPublishedPosts: [POST], orderby: [{ field: DISPLAY_NAME }] }
+    ) {
+      nodes {
+        databaseId
+        name
+      }
+    }
+  }
+`;
+
+/**
+ * __useGetFiltersQuery__
+ *
+ * To run a query within a React component, call `useGetFiltersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFiltersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFiltersQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetFiltersQuery(
+  baseOptions?: Apollo.QueryHookOptions<
+    GetFiltersQuery,
+    GetFiltersQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GetFiltersQuery, GetFiltersQueryVariables>(
+    GetFiltersDocument,
+    options
+  );
+}
+export function useGetFiltersLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GetFiltersQuery,
+    GetFiltersQueryVariables
+  >
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GetFiltersQuery, GetFiltersQueryVariables>(
+    GetFiltersDocument,
+    options
+  );
+}
+export type GetFiltersQueryHookResult = ReturnType<typeof useGetFiltersQuery>;
+export type GetFiltersLazyQueryHookResult = ReturnType<
+  typeof useGetFiltersLazyQuery
+>;
+export type GetFiltersQueryResult = Apollo.QueryResult<
+  GetFiltersQuery,
+  GetFiltersQueryVariables
 >;

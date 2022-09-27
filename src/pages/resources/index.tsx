@@ -7,21 +7,33 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 
 import Jumbotron from "../../components/jumbotron";
+import Filter from "../../components/resources/filter";
 import Item from "../../components/resources/item";
 import { books } from "../../config/bible";
 import { addApolloState, getClient } from "../../services/appolo";
 import {
   GetResourcesQuery,
   GetResourcesQueryVariables,
+  GetFiltersQuery,
 } from "../../types/graphql";
 
 type Props = {
   posts: GetResourcesQuery["posts"];
+  categories: GetFiltersQuery["categories"]["nodes"];
+  authors: GetFiltersQuery["users"]["nodes"];
 };
 
-const getResources = ({ book, chapter, verse }: ParsedUrlQuery = {}) => ({
+const getResources = ({
+  author,
+  category,
+  book,
+  chapter,
+  verse,
+}: ParsedUrlQuery = {}) => ({
   query: gql`
     query GetResources(
+      $category: Int
+      $author: Int
       $book: String
       $chapter: Int
       $verse: Int
@@ -31,6 +43,8 @@ const getResources = ({ book, chapter, verse }: ParsedUrlQuery = {}) => ({
         first: 10
         after: $after
         where: {
+          categoryId: $category
+          author: $author
           bibleRefBook: $book
           bibleRefChapter: $chapter
           bibleRefVerse: $verse
@@ -76,6 +90,8 @@ const getResources = ({ book, chapter, verse }: ParsedUrlQuery = {}) => ({
     }
   `,
   variables: {
+    category: Number(category) || null,
+    author: Number(author) || null,
     book: (book as string) || null,
     chapter: (book && Number(chapter)) || null,
     verse: (book && chapter && Number(verse)) || null,
@@ -83,7 +99,7 @@ const getResources = ({ book, chapter, verse }: ParsedUrlQuery = {}) => ({
   },
 });
 
-const Resources = () => {
+const Resources = ({ categories, authors }: Props) => {
   const router = useRouter();
 
   const { query, variables } = getResources(router.query);
@@ -94,24 +110,23 @@ const Resources = () => {
   >(query, {
     variables,
     notifyOnNetworkStatusChange: true,
+    fetchPolicy: "no-cache",
   });
 
-  const push = (key: string, value: string) => {
-    if (value) {
-      router.push({
-        pathname: "/resources",
-        query: { ...router.query, [key]: value },
-      });
+  const push = (key: string, value: string | number | undefined) => {
+    const nextVariables = value
+      ? { ...variables, [key]: value }
+      : omit(variables, key);
 
-      refetch({ ...router.query, [key]: value });
-    } else {
-      router.push({
-        pathname: "/resources",
-        query: omit(router.query, key),
-      });
+    router.push({
+      pathname: "/resources",
+      query: Object.entries(nextVariables).reduce(
+        (acc, [key, item]) => (item ? { ...acc, [key]: item } : acc),
+        {}
+      ),
+    });
 
-      refetch(omit(router.query, key));
-    }
+    refetch(nextVariables);
   };
 
   return (
@@ -162,43 +177,49 @@ const Resources = () => {
         <div className="w-[1px] self-stretch bg-black/20"></div>
         <div className="w-96">
           <div className="sticky top-[144px] flex flex-col gap-8">
-            <h3 className="mb-6 font-suez text-xl">Rechercher</h3>
+            <h3 className="font-suez text-xl">Rechercher</h3>
 
-            <h3 className="mb-6 font-suez text-xl">Filtrer</h3>
+            <h3 className="font-suez text-xl">Filtrer</h3>
 
-            <select
-              defaultValue={router.query.book}
-              onChange={(event) => {
-                push("book", event.target.value);
-              }}
-            >
-              <option value="">Tous</option>
-              {books.map((book) => (
-                <option key={book} value={book}>
-                  {book}
-                </option>
-              ))}
-            </select>
-
-            <input
-              placeholder="Chapitre"
-              defaultValue={router.query.chapter}
-              disabled={!router.query.book}
-              style={{ width: 30 }}
-              onChange={(event) => {
-                push("chapter", event.target.value);
-              }}
-            />
-
-            <input
-              placeholder="Verset"
-              defaultValue={router.query.verse}
-              disabled={!router.query.book || !router.query.chapter}
-              style={{ width: 30 }}
-              onChange={(event) => {
-                push("verse", event.target.value);
-              }}
-            />
+            <div className="flex flex-col gap-4">
+              <Filter
+                name="Catégorie"
+                items={categories}
+                labelProp="name"
+                value={
+                  categories.find(
+                    (category) => category.databaseId === variables.category
+                  ) || null
+                }
+                onChange={(category) => {
+                  push("category", category?.databaseId);
+                }}
+              ></Filter>
+              <Filter
+                name="Auteur"
+                items={authors}
+                labelProp="name"
+                value={
+                  authors.find(
+                    (author) => author.databaseId === variables.author
+                  ) || null
+                }
+                onChange={(user) => {
+                  push("author", user?.databaseId);
+                }}
+              ></Filter>
+              <Filter
+                name="Livre"
+                items={books}
+                labelProp="name"
+                value={
+                  books.find((book) => book.name === variables.book) || null
+                }
+                onChange={(book) => {
+                  push("book", book?.name);
+                }}
+              ></Filter>
+            </div>
           </div>
         </div>
       </div>
@@ -209,12 +230,52 @@ const Resources = () => {
 export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => {
   const client = getClient();
 
+  const {
+    data: {
+      categories: { nodes: categories },
+      users: { nodes: authors },
+    },
+  } = await getClient().query<GetFiltersQuery>({
+    query: gql`
+      query GetFilters {
+        categories(
+          where: {
+            hideEmpty: true
+            parent: 0
+            exclude: [446]
+            orderby: COUNT
+            order: DESC
+          }
+        ) {
+          nodes {
+            databaseId
+            name
+          }
+        }
+        users(
+          first: 100
+          where: {
+            hasPublishedPosts: [POST]
+            orderby: [{ field: DISPLAY_NAME }]
+          }
+        ) {
+          nodes {
+            databaseId
+            name
+          }
+        }
+      }
+    `,
+  });
+
   await client.query<GetResourcesQuery, GetResourcesQueryVariables>(
     getResources()
   );
 
   return addApolloState(client, {
     props: {
+      categories,
+      authors,
       ...(await serverSideTranslations(locale || "fr")),
     },
   });

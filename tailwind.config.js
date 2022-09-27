@@ -18,6 +18,7 @@ module.exports = {
     },
   },
   plugins: [
+    require("@headlessui/tailwindcss")({ prefix: "ui" }),
     plugin(function ({ addUtilities }) {
       addUtilities({
         ".flex-center": {
