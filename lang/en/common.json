@@ -1,4 +1,8 @@
 {
+  "common.no-result": "No result",
+  "common.bible-references": "Bible references",
+  "common.share": "Share",
+
   "header.about-us": "About Us",
   "header.belief": "Our Belief",
   "header.worship": "Worship",
@@ -8,5 +12,19 @@
   "header.contact": "Contact",
   "header.donate": "Donate",
 
-  "footer.version": "Version française"
+  "footer.version": "Version française",
+
+  "home.intro.a": "A",
+  "home.intro.good-news": "Good News",
+  "home.intro.to-know": "To Know &",
+  "home.intro.to-make-know": "To Make Known",
+
+  "resources.title": "Resources",
+  "resources.search": "Search",
+  "resources.filter": "Filter",
+  "resources.filters.category": "Category",
+  "resources.filters.author": "Author",
+  "resources.filters.book": "Book",
+
+  "resource.no-transcription": "The transcript of this recording is not available.<br />Thank you for your understanding!"
 }

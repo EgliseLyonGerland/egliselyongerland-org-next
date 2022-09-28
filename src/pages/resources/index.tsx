@@ -3,6 +3,7 @@ import { ParsedUrlQuery } from "querystring";
 import { gql, useQuery } from "@apollo/client";
 import { omit } from "lodash";
 import { GetStaticProps } from "next";
+import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 
@@ -101,6 +102,7 @@ const getResources = ({
 
 const Resources = ({ categories, authors }: Props) => {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const { query, variables } = getResources(router.query);
 
@@ -133,7 +135,9 @@ const Resources = ({ categories, authors }: Props) => {
     <div>
       <Jumbotron>
         <div className="py-20 flex-center">
-          <h1 className="mb-6 max-w-lg font-suez text-5xl">Ressources</h1>
+          <h1 className="mb-6 max-w-lg font-suez text-5xl">
+            {t("resources.title", "Ressources")}
+          </h1>
         </div>
       </Jumbotron>
 
@@ -177,13 +181,17 @@ const Resources = ({ categories, authors }: Props) => {
         <div className="w-[1px] self-stretch bg-black/20"></div>
         <div className="w-96">
           <div className="sticky top-[144px] flex flex-col gap-8">
-            <h3 className="font-suez text-xl">Rechercher</h3>
+            <h3 className="font-suez text-xl">
+              {t("resources.search", "Rechercher")}
+            </h3>
 
-            <h3 className="font-suez text-xl">Filtrer</h3>
+            <h3 className="font-suez text-xl">
+              {t("resources.filter", "Filtrer")}
+            </h3>
 
             <div className="flex flex-col gap-4">
               <Filter
-                name="Catégorie"
+                name={t("resources.filters.category", "Catégorie")}
                 items={categories}
                 labelProp="name"
                 value={
@@ -196,7 +204,7 @@ const Resources = ({ categories, authors }: Props) => {
                 }}
               ></Filter>
               <Filter
-                name="Auteur"
+                name={t("resources.filters.author", "Auteur")}
                 items={authors}
                 labelProp="name"
                 value={
@@ -209,7 +217,7 @@ const Resources = ({ categories, authors }: Props) => {
                 }}
               ></Filter>
               <Filter
-                name="Livre"
+                name={t("resources.filters.book", "Livre")}
                 items={books}
                 labelProp="name"
                 value={

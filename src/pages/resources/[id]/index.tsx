@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import { LinkIcon } from "@heroicons/react/24/solid";
 import { GetStaticPaths, GetStaticProps } from "next";
+import { Trans, useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Image from "next/future/image";
 import Link from "next/link";
@@ -23,6 +24,8 @@ interface Props {
 }
 
 function Post({ post }: Props) {
+  const { t } = useTranslation();
+
   const [content, anchors] = useMemo(
     () => addAnchors(post?.content || ""),
     [post]
@@ -77,9 +80,11 @@ function Post({ post }: Props) {
           ) : (
             <div className="text-center">
               <div className="inline-block rounded-lg bg-black/5 p-5 text-center text-xl italic opacity-70">
-                La transcription de cet enregistrement n&rsquo;est pas
-                disponible. <br />
-                Merci de votre compréhension !
+                <Trans i18nKey="resource.no-transcription" t={t}>
+                  La transcription de cet enregistrement n&rsquo;est pas
+                  disponible. <br />
+                  Merci de votre compréhension !
+                </Trans>
               </div>
             </div>
           )}
@@ -88,7 +93,9 @@ function Post({ post }: Props) {
           <div className="sticky top-[144px] flex flex-col gap-8">
             {anchors.length > 0 && (
               <div>
-                <h2 className="mb-6 font-suez text-xl">Sommaire</h2>
+                <h2 className="mb-6 font-suez text-xl">
+                  {t("resource.summury", "Sommaire")}
+                </h2>
 
                 <div className="flex flex-col gap-2">
                   {anchors.map((anchor, index) => (
@@ -105,7 +112,9 @@ function Post({ post }: Props) {
             )}
             {post.bibleRefs?.length && (
               <div>
-                <h2 className="mb-6 font-suez text-xl">Références Bibliques</h2>
+                <h2 className="mb-6 font-suez text-xl">
+                  {t("common.bible-references", "Références Bibliques")}
+                </h2>
 
                 <div className="flex flex-wrap gap-4">
                   {post.bibleRefs.map(({ raw }) => (
@@ -120,7 +129,9 @@ function Post({ post }: Props) {
               </div>
             )}
             <div>
-              <h2 className="mb-6 font-suez text-xl">Partager</h2>
+              <h2 className="mb-6 font-suez text-xl">
+                {t("common.share", "Partager")}
+              </h2>
               <div className="flex flex-col gap-4">
                 {["Copier le lien", "Facebook", "Twitter"].map((label) => (
                   <div

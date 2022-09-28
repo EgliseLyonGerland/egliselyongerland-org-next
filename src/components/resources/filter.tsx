@@ -1,6 +1,7 @@
 import { Combobox, Transition } from "@headlessui/react";
 import { ChevronRightIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
+import { useTranslation } from "next-i18next";
 import { Fragment, useState } from "react";
 
 type Props<T> = {
@@ -12,6 +13,7 @@ type Props<T> = {
 };
 
 function Filter<T>({ name, items = [], labelProp, value, onChange }: Props<T>) {
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
 
   const filteredItems =
@@ -76,7 +78,7 @@ function Filter<T>({ name, items = [], labelProp, value, onChange }: Props<T>) {
 
           {filteredItems.length === 0 && query !== "" ? (
             <div className="relative cursor-default select-none py-3 px-4 italic text-black/50">
-              Nothing found
+              {t("common.no-result", "Aucun résultat")}
             </div>
           ) : (
             filteredItems.map((item) => (
