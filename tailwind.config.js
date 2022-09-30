@@ -5,6 +5,16 @@ const plugin = require("tailwindcss/plugin");
 module.exports = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    container: {
+      center: true,
+      padding: {
+        DEFAULT: "1rem",
+        sm: "2rem",
+        lg: "4rem",
+        xl: "5rem",
+        "2xl": "6rem",
+      },
+    },
     extend: {
       fontFamily: {
         suez: "'Suez One', serif",
@@ -19,6 +29,7 @@ module.exports = {
   },
   plugins: [
     require("@headlessui/tailwindcss")({ prefix: "ui" }),
+    require("@tailwindcss/typography"),
     plugin(function ({ addUtilities }) {
       addUtilities({
         ".flex-center": {

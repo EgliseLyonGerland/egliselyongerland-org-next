@@ -7,6 +7,8 @@ import Head from "next/head";
 import Layout from "../components/layout";
 import { useApollo } from "../services/appolo";
 
+import "@wordpress/block-library/build-style/style.css";
+
 function MyApp({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps);
 

@@ -1,0 +1,7 @@
+.content {
+  @apply prose prose-zinc my-16 max-w-full prose-headings:font-suez lg:prose-lg;
+}
+
+.content .has-background {
+  @apply bg-black/5;
+}

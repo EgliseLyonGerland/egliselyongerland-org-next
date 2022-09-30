@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
+import Jumbotron from "../../components/jumbotron";
 import { getClient } from "../../services/appolo";
 import {
   GetPageQuery,
@@ -10,6 +11,7 @@ import {
   GetPagesQueryVariables,
   PageIdType,
 } from "../../types/graphql";
+import styles from "./index.module.css";
 
 type Props = {
   page: GetPageQuery["page"];
@@ -22,8 +24,20 @@ const Page = ({ page }: Props) => {
 
   return (
     <div>
-      <h1>{page.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: page.content }} />
+      <Jumbotron>
+        <div className="py-20 flex-center">
+          <h1 className="mb-6 max-w-lg font-suez text-5xl">
+            <h1>{page.title}</h1>
+          </h1>
+        </div>
+      </Jumbotron>
+
+      <div className="container">
+        <div
+          className={styles.content}
+          dangerouslySetInnerHTML={{ __html: page.content }}
+        />
+      </div>
     </div>
   );
 };
