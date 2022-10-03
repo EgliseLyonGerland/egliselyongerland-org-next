@@ -24,6 +24,7 @@ module.exports = {
         chaos: "#32302B",
         sand: "#F3E9DF",
         pop: "#4946FF",
+        stale: "#E1E7EC",
       },
     },
   },

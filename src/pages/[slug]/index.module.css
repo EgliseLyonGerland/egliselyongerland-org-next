@@ -3,5 +3,5 @@
 }
 
 .content .has-background {
-  @apply bg-black/5;
+  @apply bg-stale;
 }

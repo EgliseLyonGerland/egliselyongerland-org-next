@@ -34,7 +34,7 @@ function Filter<T>({ name, items = [], labelProp, value, onChange }: Props<T>) {
       nullable
     >
       <div
-        className={clsx("rounded-lg bg-black/5", {
+        className={clsx("rounded-lg bg-stale", {
           "ring-1 ring-pop": !!value,
         })}
       >

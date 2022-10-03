@@ -79,7 +79,7 @@ function Post({ post }: Props) {
             />
           ) : (
             <div className="text-center">
-              <div className="inline-block rounded-lg bg-black/5 p-5 text-center text-xl italic opacity-70">
+              <div className="inline-block rounded-lg bg-stale p-5 text-center text-xl italic opacity-70">
                 <Trans i18nKey="resource.no-transcription" t={t}>
                   La transcription de cet enregistrement n&rsquo;est pas
                   disponible. <br />
@@ -102,7 +102,7 @@ function Post({ post }: Props) {
                     <a
                       href={`#${anchor.key}`}
                       key={anchor.key}
-                      className="overflow-auto text-ellipsis whitespace-nowrap rounded-md bg-black/5 py-2 pr-4 pl-6 transition-colors hover:bg-pop hover:text-white"
+                      className="overflow-auto text-ellipsis whitespace-nowrap rounded-md bg-stale py-2 pr-4 pl-6 transition-colors hover:bg-pop hover:text-white"
                     >
                       {index + 1}. {anchor.title}
                     </a>
@@ -118,10 +118,7 @@ function Post({ post }: Props) {
 
                 <div className="flex flex-wrap gap-4">
                   {post.bibleRefs.map(({ raw }) => (
-                    <div
-                      key={raw}
-                      className="rounded-full bg-black/5 px-4 py-1"
-                    >
+                    <div key={raw} className="rounded-full bg-stale px-4 py-1">
                       {raw}
                     </div>
                   ))}
@@ -136,9 +133,9 @@ function Post({ post }: Props) {
                 {["Copier le lien", "Facebook", "Twitter"].map((label) => (
                   <div
                     key={label}
-                    className="group flex cursor-pointer items-center gap-4 transition-colors hover:bg-black/5"
+                    className="group flex cursor-pointer items-center gap-4 transition-colors hover:bg-stale"
                   >
-                    <div className="rounded-lg bg-black/5 p-3 group-hover:bg-pop group-hover:text-white">
+                    <div className="rounded-lg bg-stale p-3 group-hover:bg-pop group-hover:text-white">
                       <LinkIcon className="h-6" />
                     </div>
                     {label}
