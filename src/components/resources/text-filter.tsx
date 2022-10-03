@@ -12,7 +12,13 @@ type Props<T> = {
   onChange: (value: T | null) => void;
 };
 
-function Filter<T>({ name, items = [], labelProp, value, onChange }: Props<T>) {
+function TextFilter<T>({
+  name,
+  items = [],
+  labelProp,
+  value,
+  onChange,
+}: Props<T>) {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
 
@@ -97,4 +103,4 @@ function Filter<T>({ name, items = [], labelProp, value, onChange }: Props<T>) {
   );
 }
 
-export default Filter;
+export default TextFilter;

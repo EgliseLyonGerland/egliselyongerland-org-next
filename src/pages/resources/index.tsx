@@ -8,8 +8,9 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useRouter } from "next/router";
 
 import Jumbotron from "../../components/jumbotron";
-import Filter from "../../components/resources/filter";
 import Item from "../../components/resources/item";
+import NumberFilter from "../../components/resources/number-filter";
+import TextFilter from "../../components/resources/text-filter";
 import { books } from "../../config/bible";
 import { addApolloState, getClient } from "../../services/appolo";
 import {
@@ -63,6 +64,11 @@ const getResources = ({
             databaseId
             title
             date
+            categories {
+              nodes {
+                name
+              }
+            }
             author {
               node {
                 name
@@ -115,10 +121,20 @@ const Resources = ({ categories, authors }: Props) => {
     fetchPolicy: "no-cache",
   });
 
-  const push = (key: string, value: string | number | undefined) => {
-    const nextVariables = value
-      ? { ...variables, [key]: value }
-      : omit(variables, key);
+  const push = (
+    key: keyof GetResourcesQueryVariables,
+    value: string | number | undefined
+  ) => {
+    const nextVariables =
+      value !== null ? { ...variables, [key]: value } : omit(variables, key);
+
+    if (value === null && key === "book") {
+      // nextVariables = omit(nextVariables, "chapter");
+      // nextVariables = omit(nextVariables, "verse");
+    }
+    if (value === null && key === "chapter") {
+      // nextVariables = omit(nextVariables, "verse");
+    }
 
     router.push({
       pathname: "/resources",
@@ -131,6 +147,13 @@ const Resources = ({ categories, authors }: Props) => {
     refetch(nextVariables);
   };
 
+  const currentBook =
+    books.find((book) => book.name === variables.book) || null;
+  const currentChapter =
+    currentBook && variables.chapter ? Number(variables.chapter) : null;
+  const currentVerse =
+    currentChapter && variables.verse ? Number(variables.verse) : null;
+
   return (
     <div>
       <Jumbotron>
@@ -142,7 +165,7 @@ const Resources = ({ categories, authors }: Props) => {
       </Jumbotron>
 
       <div className="mx-auto flex max-w-screen-xl justify-between py-12">
-        <div className="flex max-w-screen-md flex-grow flex-col gap-6">
+        <div className="flex max-w-screen-md flex-grow flex-col gap-14">
           {data?.posts.edges.map(({ node: post }) => (
             <Item key={post.databaseId} data={post}></Item>
           ))}
@@ -190,7 +213,7 @@ const Resources = ({ categories, authors }: Props) => {
             </h3>
 
             <div className="flex flex-col gap-4">
-              <Filter
+              <TextFilter
                 name={t("resources.filters.category", "Catégorie")}
                 items={categories}
                 labelProp="name"
@@ -202,8 +225,8 @@ const Resources = ({ categories, authors }: Props) => {
                 onChange={(category) => {
                   push("category", category?.databaseId);
                 }}
-              ></Filter>
-              <Filter
+              ></TextFilter>
+              <TextFilter
                 name={t("resources.filters.author", "Auteur")}
                 items={authors}
                 labelProp="name"
@@ -215,18 +238,56 @@ const Resources = ({ categories, authors }: Props) => {
                 onChange={(user) => {
                   push("author", user?.databaseId);
                 }}
-              ></Filter>
-              <Filter
+              ></TextFilter>
+              <TextFilter
                 name={t("resources.filters.book", "Livre")}
                 items={books}
                 labelProp="name"
-                value={
-                  books.find((book) => book.name === variables.book) || null
-                }
+                value={currentBook}
                 onChange={(book) => {
                   push("book", book?.name);
                 }}
-              ></Filter>
+              ></TextFilter>
+              <NumberFilter
+                name={t("resources.filters.chapter", "Chapitre")}
+                items={
+                  currentBook
+                    ? currentBook.versesByChapters.map((_, index) => index + 1)
+                    : []
+                }
+                value={currentChapter}
+                disabled={!currentBook}
+                formatValue={(chapter) =>
+                  `${t("resources.filters.chapter", "Chapitre")} ${chapter}`
+                }
+                onChange={(chapter) => {
+                  push("chapter", `${chapter}`);
+                }}
+              ></NumberFilter>
+              <NumberFilter
+                name={t("resources.filters.verse", "Verset")}
+                items={
+                  currentBook && currentChapter
+                    ? Array.from(
+                        {
+                          length:
+                            currentBook.versesByChapters[
+                              Number(variables.chapter) - 1
+                            ],
+                        },
+                        (_, index) => index
+                      )
+                    : []
+                }
+                value={currentVerse}
+                disabled={!currentChapter}
+                formatValue={(verse) =>
+                  `${t("resources.filters.verse", "Verset")} ${verse}`
+                }
+                onChange={(verse) => {
+                  push("verse", `${verse}`);
+                }}
+              ></NumberFilter>
             </div>
           </div>
         </div>

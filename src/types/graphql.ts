@@ -284,6 +284,8 @@ export type CategoryToCategoryConnectionWhereArgs = {
   slug: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   /** Array of term taxonomy IDs, to match when querying terms. */
   termTaxonomId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Whether to prime meta caches for matched terms. Default true. */
   updateTermMetaCache: InputMaybe<Scalars["Boolean"]>;
 };
@@ -433,9 +435,9 @@ export type CategoryToPostConnectionWhereArgs = {
   tagIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Array of tag IDs, used to display objects from one tag OR another */
   tagNotIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
-  /** Array of tag slugs, used to display objects from one tag OR another */
+  /** Array of tag slugs, used to display objects from one tag AND another */
   tagSlugAnd: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  /** Array of tag slugs, used to exclude objects in specified tags */
+  /** Array of tag slugs, used to include objects in ANY specified tags */
   tagSlugIn: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   /** Title of the object */
   title: InputMaybe<Scalars["String"]>;
@@ -599,7 +601,7 @@ export type CommentToCommentConnectionWhereArgs = {
   contentIdIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Array of content object IDs to exclude affiliated comments for. */
   contentIdNotIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
-  /** Content object name to retrieve affiliated comments for. */
+  /** Content object name (i.e. slug ) to retrieve affiliated comments for. */
   contentName: InputMaybe<Scalars["String"]>;
   /** Content Object parent ID to retrieve affiliated comments for. */
   contentParent: InputMaybe<Scalars["Int"]>;
@@ -682,7 +684,7 @@ export type CommentToParentCommentConnectionWhereArgs = {
   contentIdIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Array of content object IDs to exclude affiliated comments for. */
   contentIdNotIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
-  /** Content object name to retrieve affiliated comments for. */
+  /** Content object name (i.e. slug ) to retrieve affiliated comments for. */
   contentName: InputMaybe<Scalars["String"]>;
   /** Content Object parent ID to retrieve affiliated comments for. */
   contentParent: InputMaybe<Scalars["Int"]>;
@@ -2254,7 +2256,7 @@ export type MediaItemToCommentConnectionWhereArgs = {
   contentIdIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Array of content object IDs to exclude affiliated comments for. */
   contentIdNotIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
-  /** Content object name to retrieve affiliated comments for. */
+  /** Content object name (i.e. slug ) to retrieve affiliated comments for. */
   contentName: InputMaybe<Scalars["String"]>;
   /** Content Object parent ID to retrieve affiliated comments for. */
   contentParent: InputMaybe<Scalars["Int"]>;
@@ -3144,7 +3146,7 @@ export type PageToCommentConnectionWhereArgs = {
   contentIdIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Array of content object IDs to exclude affiliated comments for. */
   contentIdNotIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
-  /** Content object name to retrieve affiliated comments for. */
+  /** Content object name (i.e. slug ) to retrieve affiliated comments for. */
   contentName: InputMaybe<Scalars["String"]>;
   /** Content Object parent ID to retrieve affiliated comments for. */
   contentParent: InputMaybe<Scalars["Int"]>;
@@ -3758,9 +3760,9 @@ export type PostFormatToPostConnectionWhereArgs = {
   tagIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Array of tag IDs, used to display objects from one tag OR another */
   tagNotIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
-  /** Array of tag slugs, used to display objects from one tag OR another */
+  /** Array of tag slugs, used to display objects from one tag AND another */
   tagSlugAnd: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  /** Array of tag slugs, used to exclude objects in specified tags */
+  /** Array of tag slugs, used to include objects in ANY specified tags */
   tagSlugIn: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   /** Title of the object */
   title: InputMaybe<Scalars["String"]>;
@@ -3963,6 +3965,8 @@ export type PostToCategoryConnectionWhereArgs = {
   slug: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   /** Array of term taxonomy IDs, to match when querying terms. */
   termTaxonomId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Whether to prime meta caches for matched terms. Default true. */
   updateTermMetaCache: InputMaybe<Scalars["Boolean"]>;
 };
@@ -4019,7 +4023,7 @@ export type PostToCommentConnectionWhereArgs = {
   contentIdIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Array of content object IDs to exclude affiliated comments for. */
   contentIdNotIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
-  /** Content object name to retrieve affiliated comments for. */
+  /** Content object name (i.e. slug ) to retrieve affiliated comments for. */
   contentName: InputMaybe<Scalars["String"]>;
   /** Content Object parent ID to retrieve affiliated comments for. */
   contentParent: InputMaybe<Scalars["Int"]>;
@@ -4109,6 +4113,8 @@ export type PostToPostFormatConnectionWhereArgs = {
   slug: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   /** Array of term taxonomy IDs, to match when querying terms. */
   termTaxonomId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Whether to prime meta caches for matched terms. Default true. */
   updateTermMetaCache: InputMaybe<Scalars["Boolean"]>;
 };
@@ -4198,9 +4204,9 @@ export type PostToRevisionConnectionWhereArgs = {
   tagIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Array of tag IDs, used to display objects from one tag OR another */
   tagNotIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
-  /** Array of tag slugs, used to display objects from one tag OR another */
+  /** Array of tag slugs, used to display objects from one tag AND another */
   tagSlugAnd: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  /** Array of tag slugs, used to exclude objects in specified tags */
+  /** Array of tag slugs, used to include objects in ANY specified tags */
   tagSlugIn: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   /** Title of the object */
   title: InputMaybe<Scalars["String"]>;
@@ -4266,6 +4272,8 @@ export type PostToTagConnectionWhereArgs = {
   slug: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   /** Array of term taxonomy IDs, to match when querying terms. */
   termTaxonomId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Whether to prime meta caches for matched terms. Default true. */
   updateTermMetaCache: InputMaybe<Scalars["Boolean"]>;
 };
@@ -4332,6 +4340,8 @@ export type PostToTermNodeConnectionWhereArgs = {
   taxonomies: InputMaybe<Array<InputMaybe<TaxonomyEnum>>>;
   /** Array of term taxonomy IDs, to match when querying terms. */
   termTaxonomId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Whether to prime meta caches for matched terms. Default true. */
   updateTermMetaCache: InputMaybe<Scalars["Boolean"]>;
 };
@@ -5294,6 +5304,8 @@ export type RootQueryToCategoryConnectionWhereArgs = {
   slug: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   /** Array of term taxonomy IDs, to match when querying terms. */
   termTaxonomId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Whether to prime meta caches for matched terms. Default true. */
   updateTermMetaCache: InputMaybe<Scalars["Boolean"]>;
 };
@@ -5350,7 +5362,7 @@ export type RootQueryToCommentConnectionWhereArgs = {
   contentIdIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Array of content object IDs to exclude affiliated comments for. */
   contentIdNotIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
-  /** Content object name to retrieve affiliated comments for. */
+  /** Content object name (i.e. slug ) to retrieve affiliated comments for. */
   contentName: InputMaybe<Scalars["String"]>;
   /** Content Object parent ID to retrieve affiliated comments for. */
   contentParent: InputMaybe<Scalars["Int"]>;
@@ -5868,9 +5880,9 @@ export type RootQueryToPostConnectionWhereArgs = {
   tagIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Array of tag IDs, used to display objects from one tag OR another */
   tagNotIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
-  /** Array of tag slugs, used to display objects from one tag OR another */
+  /** Array of tag slugs, used to display objects from one tag AND another */
   tagSlugAnd: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  /** Array of tag slugs, used to exclude objects in specified tags */
+  /** Array of tag slugs, used to include objects in ANY specified tags */
   tagSlugIn: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   /** Title of the object */
   title: InputMaybe<Scalars["String"]>;
@@ -5936,6 +5948,8 @@ export type RootQueryToPostFormatConnectionWhereArgs = {
   slug: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   /** Array of term taxonomy IDs, to match when querying terms. */
   termTaxonomId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Whether to prime meta caches for matched terms. Default true. */
   updateTermMetaCache: InputMaybe<Scalars["Boolean"]>;
 };
@@ -6000,6 +6014,8 @@ export type RootQueryToTagConnectionWhereArgs = {
   slug: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   /** Array of term taxonomy IDs, to match when querying terms. */
   termTaxonomId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Whether to prime meta caches for matched terms. Default true. */
   updateTermMetaCache: InputMaybe<Scalars["Boolean"]>;
 };
@@ -6086,6 +6102,8 @@ export type RootQueryToTermNodeConnectionWhereArgs = {
   taxonomies: InputMaybe<Array<InputMaybe<TaxonomyEnum>>>;
   /** Array of term taxonomy IDs, to match when querying terms. */
   termTaxonomId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
+  /** Array of term taxonomy IDs, to match when querying terms. */
+  termTaxonomyId: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Whether to prime meta caches for matched terms. Default true. */
   updateTermMetaCache: InputMaybe<Scalars["Boolean"]>;
 };
@@ -6480,9 +6498,9 @@ export type TagToPostConnectionWhereArgs = {
   tagIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Array of tag IDs, used to display objects from one tag OR another */
   tagNotIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
-  /** Array of tag slugs, used to display objects from one tag OR another */
+  /** Array of tag slugs, used to display objects from one tag AND another */
   tagSlugAnd: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  /** Array of tag slugs, used to exclude objects in specified tags */
+  /** Array of tag slugs, used to include objects in ANY specified tags */
   tagSlugIn: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   /** Title of the object */
   title: InputMaybe<Scalars["String"]>;
@@ -7362,7 +7380,7 @@ export type UserToCommentConnectionWhereArgs = {
   contentIdIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Array of content object IDs to exclude affiliated comments for. */
   contentIdNotIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
-  /** Content object name to retrieve affiliated comments for. */
+  /** Content object name (i.e. slug ) to retrieve affiliated comments for. */
   contentName: InputMaybe<Scalars["String"]>;
   /** Content Object parent ID to retrieve affiliated comments for. */
   contentParent: InputMaybe<Scalars["Int"]>;
@@ -7702,9 +7720,9 @@ export type UserToPostConnectionWhereArgs = {
   tagIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
   /** Array of tag IDs, used to display objects from one tag OR another */
   tagNotIn: InputMaybe<Array<InputMaybe<Scalars["ID"]>>>;
-  /** Array of tag slugs, used to display objects from one tag OR another */
+  /** Array of tag slugs, used to display objects from one tag AND another */
   tagSlugAnd: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
-  /** Array of tag slugs, used to exclude objects in specified tags */
+  /** Array of tag slugs, used to include objects in ANY specified tags */
   tagSlugIn: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
   /** Title of the object */
   title: InputMaybe<Scalars["String"]>;
@@ -7900,6 +7918,10 @@ export type GetResourcesQuery = {
         databaseId: number;
         title: string;
         date: string;
+        categories: {
+          __typename?: "PostToCategoryConnection";
+          nodes: Array<{ __typename?: "Category"; name: string }>;
+        };
         author: {
           __typename?: "NodeWithAuthorToUserConnectionEdge";
           node: {
@@ -8260,6 +8282,11 @@ export const GetResourcesDocument = gql`
           databaseId
           title
           date
+          categories {
+            nodes {
+              name
+            }
+          }
           author {
             node {
               name
