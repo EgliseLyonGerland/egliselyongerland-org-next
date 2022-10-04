@@ -1,7 +1,6 @@
 import { ParsedUrlQuery } from "querystring";
 
 import { gql, useQuery } from "@apollo/client";
-import { omit } from "lodash";
 import { GetStaticProps } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -12,6 +11,7 @@ import Item from "../../components/resources/item";
 import NumberFilter from "../../components/resources/number-filter";
 import TextFilter from "../../components/resources/text-filter";
 import { books } from "../../config/bible";
+import { resources } from "../../libs/utils/routing";
 import { addApolloState, getClient } from "../../services/appolo";
 import {
   GetResourcesQuery,
@@ -112,7 +112,7 @@ const Resources = ({ categories, authors }: Props) => {
 
   const { query, variables } = getResources(router.query);
 
-  const { refetch, data, fetchMore } = useQuery<
+  const { data, fetchMore } = useQuery<
     GetResourcesQuery,
     GetResourcesQueryVariables
   >(query, {
@@ -123,29 +123,8 @@ const Resources = ({ categories, authors }: Props) => {
 
   const push = (
     key: keyof GetResourcesQueryVariables,
-    value: string | number | undefined
-  ) => {
-    const nextVariables =
-      value !== null ? { ...variables, [key]: value } : omit(variables, key);
-
-    if (value === null && key === "book") {
-      // nextVariables = omit(nextVariables, "chapter");
-      // nextVariables = omit(nextVariables, "verse");
-    }
-    if (value === null && key === "chapter") {
-      // nextVariables = omit(nextVariables, "verse");
-    }
-
-    router.push({
-      pathname: "/resources",
-      query: Object.entries(nextVariables).reduce(
-        (acc, [key, item]) => (item ? { ...acc, [key]: item } : acc),
-        {}
-      ),
-    });
-
-    refetch(nextVariables);
-  };
+    value: string | number | undefined | null
+  ) => router.push(resources({ ...router.query, [key]: value }));
 
   const currentBook =
     books.find((book) => book.name === variables.book) || null;
@@ -261,7 +240,7 @@ const Resources = ({ categories, authors }: Props) => {
                   `${t("resources.filters.chapter", "Chapitre")} ${chapter}`
                 }
                 onChange={(chapter) => {
-                  push("chapter", `${chapter}`);
+                  push("chapter", chapter);
                 }}
               ></NumberFilter>
               <NumberFilter
@@ -275,7 +254,7 @@ const Resources = ({ categories, authors }: Props) => {
                               Number(variables.chapter) - 1
                             ],
                         },
-                        (_, index) => index
+                        (_, index) => index + 1
                       )
                     : []
                 }
@@ -285,7 +264,7 @@ const Resources = ({ categories, authors }: Props) => {
                   `${t("resources.filters.verse", "Verset")} ${verse}`
                 }
                 onChange={(verse) => {
-                  push("verse", `${verse}`);
+                  push("verse", verse);
                 }}
               ></NumberFilter>
             </div>

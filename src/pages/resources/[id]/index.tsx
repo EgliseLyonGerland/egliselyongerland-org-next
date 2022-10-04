@@ -10,6 +10,7 @@ import { useMemo } from "react";
 import Avatar from "../../../components/avatar";
 import Jumbotron from "../../../components/jumbotron";
 import { addAnchors, formatTitle } from "../../../libs/utils/resource";
+import { resources } from "../../../libs/utils/routing";
 import { getClient } from "../../../services/appolo";
 import {
   GetPostQuery,
@@ -53,7 +54,7 @@ function Post({ post }: Props) {
                 lastName={post.author.node.lastName}
                 url={post.author.node.avatar.url}
               />
-              <Link href={`/resources?author=${post.author.node.databaseId}`}>
+              <Link href={resources({ author: post.author.node.databaseId })}>
                 <a>{post.author.node.name}</a>
               </Link>
             </div>
