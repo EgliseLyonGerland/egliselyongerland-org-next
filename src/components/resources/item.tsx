@@ -23,6 +23,7 @@ const Item = ({ data }: Props) => {
     ? toDate(data.event.sermonDate)
     : new Date(data.date);
 
+  const category = data.categories.nodes[0];
   const bibleRef = data.bibleRefs[0];
 
   return (
@@ -42,6 +43,13 @@ const Item = ({ data }: Props) => {
           </Link>
         </div>
         <div className="mb-8 flex gap-2">
+          {category && (
+            <Link href={resources({ category: category.databaseId })}>
+              <a className="inline-block rounded-full bg-stale px-4 py-1 text-sm transition-colors hover:bg-pop hover:text-white">
+                {category.name}
+              </a>
+            </Link>
+          )}
           {bibleRef && (
             <Link
               href={resources({

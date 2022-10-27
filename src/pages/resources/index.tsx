@@ -66,6 +66,7 @@ const getResources = ({
             date
             categories {
               nodes {
+                databaseId
                 name
               }
             }

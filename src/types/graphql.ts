@@ -7920,7 +7920,11 @@ export type GetResourcesQuery = {
         date: string;
         categories: {
           __typename?: "PostToCategoryConnection";
-          nodes: Array<{ __typename?: "Category"; name: string }>;
+          nodes: Array<{
+            __typename?: "Category";
+            databaseId: number;
+            name: string;
+          }>;
         };
         author: {
           __typename?: "NodeWithAuthorToUserConnectionEdge";
@@ -8293,6 +8297,7 @@ export const GetResourcesDocument = gql`
           date
           categories {
             nodes {
+              databaseId
               name
             }
           }
