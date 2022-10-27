@@ -88,6 +88,11 @@ const getResources = ({
             }
             bibleRefs {
               raw
+              book
+              chapterStart
+              chapterEnd
+              verseStart
+              verseEnd
             }
             event {
               sermonDate

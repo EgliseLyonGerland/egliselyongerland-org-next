@@ -7937,7 +7937,15 @@ export type GetResourcesQuery = {
           __typename?: "NodeWithFeaturedImageToMediaItemConnectionEdge";
           node: { __typename?: "MediaItem"; sourceUrl: string };
         };
-        bibleRefs: Array<{ __typename?: "BibleRef"; raw: string }>;
+        bibleRefs: Array<{
+          __typename?: "BibleRef";
+          raw: string;
+          book: string;
+          chapterStart: number;
+          chapterEnd: number;
+          verseStart: number;
+          verseEnd: number;
+        }>;
         event: { __typename?: "Post_Event"; sermonDate: string };
       };
     }>;
@@ -8306,6 +8314,11 @@ export const GetResourcesDocument = gql`
           }
           bibleRefs {
             raw
+            book
+            chapterStart
+            chapterEnd
+            verseStart
+            verseEnd
           }
           event {
             sermonDate

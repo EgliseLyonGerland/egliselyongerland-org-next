@@ -6,6 +6,7 @@ import Link from "next/link";
 import { resources } from "../../libs/utils/routing";
 import { GetResourcesQuery } from "../../types/graphql";
 import Avatar from "../avatar";
+import BibleRef from "../bible-ref";
 
 type Props = {
   data: GetResourcesQuery["posts"]["edges"][number]["node"];
@@ -22,6 +23,8 @@ const Item = ({ data }: Props) => {
     ? toDate(data.event.sermonDate)
     : new Date(data.date);
 
+  const bibleRef = data.bibleRefs[0];
+
   return (
     <div className="group flex cursor-pointer gap-10">
       <div className="h-50 relative w-[30%] max-w-xs flex-shrink-0 overflow-hidden transition-transform group-hover:scale-[105%]">
@@ -37,6 +40,20 @@ const Item = ({ data }: Props) => {
           <Link href={`/resources/${data.databaseId}`}>
             <a className="font-suez text-3xl">{data.title}</a>
           </Link>
+        </div>
+        <div className="mb-8 flex gap-2">
+          {bibleRef && (
+            <Link
+              href={resources({
+                book: bibleRef.book,
+                chapter: bibleRef.chapterStart,
+              })}
+            >
+              <a className="inline-block rounded-full bg-stale px-4 py-1 text-sm hover:bg-pop hover:text-white">
+                <BibleRef bibleRef={bibleRef} />
+              </a>
+            </Link>
+          )}
         </div>
 
         <div className="flex items-center gap-4">
