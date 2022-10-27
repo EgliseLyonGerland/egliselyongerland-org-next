@@ -3,6 +3,7 @@ import locale from "date-fns/locale/fr";
 import Image from "next/future/image";
 import Link from "next/link";
 
+import { resources } from "../../libs/utils/routing";
 import { GetResourcesQuery } from "../../types/graphql";
 import Avatar from "../avatar";
 
@@ -22,33 +23,35 @@ const Item = ({ data }: Props) => {
     : new Date(data.date);
 
   return (
-    <div className="flex gap-10">
-      <div
-        className="relative w-[30%] max-w-xs flex-shrink-0 "
-        style={{ paddingBottom: "20%" }}
-      >
+    <div className="group flex cursor-pointer gap-10">
+      <div className="h-50 relative w-[30%] max-w-xs flex-shrink-0 overflow-hidden transition-transform group-hover:scale-[105%]">
         <Image
           src={data.featuredImage.node.sourceUrl}
           alt={data.title}
-          className="rounded-lg"
+          className="rounded-lg object-cover"
           fill
         />
       </div>
-      <div className="flex-grow-0">
+      <div className="prose flex-grow-0 py-1 prose-a:no-underline">
         <div className="mb-4">
           <Link href={`/resources/${data.databaseId}`}>
-            <a className="font-suez text-2xl">{data.title}</a>
+            <a className="font-suez text-3xl">{data.title}</a>
           </Link>
         </div>
 
         <div className="flex items-center gap-4">
           <Avatar
+            className="not-prose"
             firstName={data.author.node.firstName}
             lastName={data.author.node.lastName}
             url={data.author.node.avatar.url}
           />
-          <div>
-            <div className="text-lg font-bold">{data.author.node.name}</div>
+          <div className="prose-md">
+            <div className="font-bold">
+              <Link href={resources({ author: data.author.node.databaseId })}>
+                <a>{data.author.node.name}</a>
+              </Link>
+            </div>
             <div className="opacity-70">
               {format(date, "dd/MM/yy", { locale })}
             </div>

@@ -71,6 +71,7 @@ const getResources = ({
             }
             author {
               node {
+                databaseId
                 name
                 firstName
                 lastName

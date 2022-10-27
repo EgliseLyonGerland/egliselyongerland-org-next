@@ -7926,6 +7926,7 @@ export type GetResourcesQuery = {
           __typename?: "NodeWithAuthorToUserConnectionEdge";
           node: {
             __typename?: "User";
+            databaseId: number;
             name: string;
             firstName: string;
             lastName: string;
@@ -8289,6 +8290,7 @@ export const GetResourcesDocument = gql`
           }
           author {
             node {
+              databaseId
               name
               firstName
               lastName
